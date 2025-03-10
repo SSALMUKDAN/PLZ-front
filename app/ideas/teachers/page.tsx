@@ -37,6 +37,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import Navbar from "@/components/navbar";
 
 // Sample data for teacher ideas
 const teacherIdeas = [
@@ -129,116 +130,78 @@ export default function IdeasPage() {
   });
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen">
-        {/* Sidebar */}
-        <Sidebar>
-          <SidebarHeader className="border-b">
-            <div className="flex items-center gap-2 px-4 py-2">
-              <BookOpen className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold">PLZ</span>
-            </div>
-          </SidebarHeader>
-          <SidebarContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="/ideas/teachers">
-                    <BookOpen className="h-4 w-4" />
-                    <span>Teacher Ideas</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive>
-                  <Link href="/ideas/students">
-                    <Users className="h-4 w-4" />
-                    <span>Student Projects</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarContent>
-        </Sidebar>
-
-        {/* Main content */}
-        <div className="flex-1 p-6">
-          <header className="mb-8 flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">Teacher Ideas</h1>
-              <p className="text-muted-foreground">
-                Browse project ideas posted by teachers
-              </p>
-            </div>
-            <div className="flex items-center gap-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="flex items-center gap-2">
-                    <Filter className="h-4 w-4" />
-                    {filter}
-                    <ChevronDown className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => setFilter("Latest")}>
-                    Latest
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilter("Most Popular")}>
-                    Most Popular
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <Button>
-                <span>New Idea</span>
-              </Button>
-            </div>
-          </header>
-
-          {/* Mobile sidebar trigger */}
-          <div className="mb-4 md:hidden">
-            <SidebarTrigger className="mb-4" />
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+      {/* Main content */}
+      <div className="flex-1 p-6">
+        <header className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Teacher Ideas</h1>
+            <p className="text-muted-foreground">
+              Browse project ideas posted by teachers
+            </p>
           </div>
-
-          {/* Ideas grid */}
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {filteredIdeas.map((idea) => (
-              <Card key={idea.id} className="flex flex-col">
-                <CardHeader className="pb-3">
-                  <div className="flex justify-between items-start">
-                    <CardTitle className="text-xl">{idea.title}</CardTitle>
-                    <StatusBadge status={idea.status} />
-                  </div>
-                </CardHeader>
-                <CardContent className="pb-3 flex-grow">
-                  <p className="text-muted-foreground mb-4">
-                    {idea.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {idea.tags.map((tag) => (
-                      <Badge
-                        key={tag}
-                        variant="secondary"
-                        className="font-normal"
-                      >
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-                <CardFooter className="pt-3 border-t flex justify-between items-center text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <MessageSquare className="h-4 w-4" />
-                    <span>{idea.comments} comments</span>
-                  </div>
-                  <div>
-                    <span>{idea.postedDate}</span>
-                  </div>
-                </CardFooter>
-              </Card>
-            ))}
+          <div className="flex items-center gap-4">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="flex items-center gap-2">
+                  <Filter className="h-4 w-4" />
+                  {filter}
+                  <ChevronDown className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setFilter("Latest")}>
+                  Latest
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setFilter("Most Popular")}>
+                  Most Popular
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button>
+              <span>New Idea</span>
+            </Button>
           </div>
+        </header>
+
+        {/* Ideas grid */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {filteredIdeas.map((idea) => (
+            <Card key={idea.id} className="flex flex-col">
+              <CardHeader className="pb-3">
+                <div className="flex justify-between items-start">
+                  <CardTitle className="text-xl">{idea.title}</CardTitle>
+                  <StatusBadge status={idea.status} />
+                </div>
+              </CardHeader>
+              <CardContent className="pb-3 flex-grow">
+                <p className="text-muted-foreground mb-4">{idea.description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {idea.tags.map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="font-normal"
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+              <CardFooter className="pt-3 border-t flex justify-between items-center text-sm text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <MessageSquare className="h-4 w-4" />
+                  <span>{idea.comments} comments</span>
+                </div>
+                <div>
+                  <span>{idea.postedDate}</span>
+                </div>
+              </CardFooter>
+            </Card>
+          ))}
         </div>
       </div>
-    </SidebarProvider>
+    </div>
   );
 }
