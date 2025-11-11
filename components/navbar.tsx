@@ -1,8 +1,23 @@
+'use client';
+
 import { BookOpen } from 'lucide-react';
 import { Button } from './ui/button';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
+  const pathname = usePathname();
+
+  const NavLink = ({ href, children }: { href: string; children: string }) => {
+    const isActive = pathname === href;
+    return (
+      <Link href={href} className="text-sm font-medium hover:text-primary relative pb-1">
+        {children}
+        {isActive && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#3D87C7]" />}
+      </Link>
+    );
+  };
+
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -11,15 +26,9 @@ export default function Navbar() {
           <span className="text-xl font-bold">PLZ</span>
         </div>
         <nav className="hidden md:flex gap-6">
-          <Link href="/" className="text-sm font-medium hover:text-primary">
-            프로젝트 소개
-          </Link>
-          <Link href="/ideas/teachers" className="text-sm font-medium hover:text-primary">
-            선생님 아이디어
-          </Link>
-          <Link href="/ideas/students" className="text-sm font-medium hover:text-primary">
-            학생 아이디어
-          </Link>
+          <NavLink href="/">홈</NavLink>
+          <NavLink href="/ideas/teachers">선생님 아이디어</NavLink>
+          <NavLink href="/ideas/students">학생 아이디어</NavLink>
         </nav>
         <div className="flex items-center gap-4">
           <Link href="/login" className="text-sm font-medium hover:underline underline-offset-4">
