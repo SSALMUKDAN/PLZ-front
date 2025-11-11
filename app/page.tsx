@@ -1,15 +1,8 @@
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import {
-  BookOpen,
-  MessageSquare,
-  ChevronRight,
-  Lightbulb,
-  GraduationCap,
-  ArrowRight,
-} from "lucide-react";
-import Navbar from "@/components/navbar";
+import Link from 'next/link';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { BookOpen, MessageSquare, ChevronRight, Lightbulb, GraduationCap, ArrowRight } from 'lucide-react';
+import Navbar from '@/components/navbar';
 
 export default function LandingPage() {
   return (
@@ -38,7 +31,7 @@ export default function LandingPage() {
                 </div>
               </div>
               <Image
-                src="/placeholder.svg?height=550&width=550"
+                src="/SsalmukdanLogo.png?height=550&width=550"
                 width={550}
                 height={550}
                 alt="Collaboration illustration"
@@ -49,21 +42,15 @@ export default function LandingPage() {
         </section>
 
         {/* Features Section */}
-        <section
-          id="features"
-          className="w-full py-12 md:py-24 lg:py-32 bg-muted"
-        >
+        <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
-                  PLZ에 대해서
-                </h2>
+                <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">PLZ에 대해서</h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
                   선생님들이 학교에 있으면 좋겠는 서비스 아이디어를 제안하고,
                   <br />
-                  학생들이 그 아이디어를 실제로 구현하는 프로젝트를 진행할 수
-                  있도록 돕는 서비스 입니다.
+                  학생들이 그 아이디어를 실제로 구현하는 프로젝트를 진행할 수 있도록 돕는 서비스 입니다.
                 </p>
               </div>
             </div>
@@ -74,9 +61,8 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-xl font-bold">선생님의 생각</h3>
                 <p className="text-center text-muted-foreground">
-                  선생님이 학교에서 필요하다고 생각하는 서비스 아이디어를
-                  제안하고, 학생들은 그 아이디어에 맞추어 학교 시스템에 통합되는
-                  서비스를 제작합니다.
+                  선생님이 학교에서 필요하다고 생각하는 서비스 아이디어를 제안하고, 학생들은 그 아이디어에 맞추어 학교
+                  시스템에 통합되는 서비스를 제작합니다.
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-4 rounded-lg border bg-background p-6 shadow-sm">
@@ -85,9 +71,8 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-xl font-bold">학생들의 생각</h3>
                 <p className="text-center text-muted-foreground">
-                  학생들이 학교에서 만들고 싶은 서비스를 제안하고, 관심있는
-                  선생님들이 해당 서비스를 실제로 학교 시스템에서 사용할 수
-                  있도록 돕습니다.
+                  학생들이 학교에서 만들고 싶은 서비스를 제안하고, 관심있는 선생님들이 해당 서비스를 실제로 학교
+                  시스템에서 사용할 수 있도록 돕습니다.
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-4 rounded-lg border bg-background p-6 shadow-sm">
@@ -96,9 +81,8 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-xl font-bold">지속적인 소통</h3>
                 <p className="text-center text-muted-foreground">
-                  아이디어 내에서 지속적인 소통을 통해 서비스의 필요성을
-                  가늠하고, 서비스의 지속적인 개발과 유지보수, 아이디어의 확장을
-                  돕습니다.
+                  아이디어 내에서 지속적인 소통을 통해 서비스의 필요성을 가늠하고, 서비스의 지속적인 개발과 유지보수,
+                  아이디어의 확장을 돕습니다.
                 </p>
               </div>
             </div>
@@ -114,8 +98,7 @@ export default function LandingPage() {
                   아이디어를 낼 준비가 되셨나요?
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
-                  지금 PLZ에 참여하여 선생님 및 학생들과 연결하여 아이디어를
-                  실현해보세요.
+                  지금 PLZ에 참여하여 선생님 및 학생들과 연결하여 아이디어를 실현해보세요.
                 </p>
               </div>
               <Link href="/signup">
@@ -136,35 +119,21 @@ export default function LandingPage() {
             <span className="text-lg font-semibold">PLZ</span>
           </div>
           <nav className="flex gap-4 sm:gap-6">
-            <Link
-              href="/login"
-              className="text-sm font-medium hover:underline underline-offset-4"
-            >
+            <Link href="/login" className="text-sm font-medium hover:underline underline-offset-4">
               Login
             </Link>
-            <Link
-              href="/signup"
-              className="text-sm font-medium hover:underline underline-offset-4"
-            >
+            <Link href="/signup" className="text-sm font-medium hover:underline underline-offset-4">
               Sign Up
             </Link>
-            <Link
-              href="/about"
-              className="text-sm font-medium hover:underline underline-offset-4"
-            >
+            <Link href="/about" className="text-sm font-medium hover:underline underline-offset-4">
               About
             </Link>
-            <Link
-              href="/contact"
-              className="text-sm font-medium hover:underline underline-offset-4"
-            >
+            <Link href="/contact" className="text-sm font-medium hover:underline underline-offset-4">
               Contact
             </Link>
           </nav>
           <div className="flex items-center gap-4">
-            <p className="text-sm text-muted-foreground">
-              © {new Date().getFullYear()} PLZ. All rights reserved.
-            </p>
+            <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} PLZ. All rights reserved.</p>
           </div>
         </div>
       </footer>

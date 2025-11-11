@@ -1,15 +1,15 @@
-"use client"
+'use client';
 
-import { useState } from "react"
-import Link from "next/link"
-import { useParams } from "next/navigation"
-import { BookOpen, Home, User, Bell, Users, Clock, ThumbsUp, Reply, Send } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Textarea } from "@/components/ui/textarea"
-import { Separator } from "@/components/ui/separator"
+import { useState } from 'react';
+import Link from 'next/link';
+import { useParams } from 'next/navigation';
+import { BookOpen, Home, User, Bell, Users, Clock, ThumbsUp, Reply, Send } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Textarea } from '@/components/ui/textarea';
+import { Separator } from '@/components/ui/separator';
 import {
   Sidebar,
   SidebarContent,
@@ -19,134 +19,134 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar';
 
 // Sample idea data
 const ideaData = {
-  id: "1",
-  title: "Renewable Energy Science Fair Project",
+  id: '1',
+  title: 'Renewable Energy Science Fair Project',
   description:
-    "Looking for students interested in building small-scale renewable energy demonstrations for the upcoming science fair. This project will focus on creating working models of solar, wind, and hydroelectric power generation. Students will learn about energy conversion, efficiency, and the environmental impact of different energy sources. The final projects will be showcased at the district science fair in May, with potential for state-level competition for exceptional projects.",
-  tags: ["Science", "Environment", "Engineering"],
-  status: "Open",
+    'Looking for students interested in building small-scale renewable energy demonstrations for the upcoming science fair. This project will focus on creating working models of solar, wind, and hydroelectric power generation. Students will learn about energy conversion, efficiency, and the environmental impact of different energy sources. The final projects will be showcased at the district science fair in May, with potential for state-level competition for exceptional projects.',
+  tags: ['Science', 'Environment', 'Engineering'],
+  status: 'Open',
   author: {
-    name: "Dr. Sarah Johnson",
-    role: "Science Teacher",
-    avatar: "/placeholder.svg?height=40&width=40",
+    name: 'Dr. Sarah Johnson',
+    role: 'Science Teacher',
+    avatar: '/SsalmukdanLogo.png?height=40&width=40',
   },
-  postedDate: "2 days ago",
+  postedDate: '2 days ago',
   comments: [
     {
-      id: "c1",
+      id: 'c1',
       author: {
-        name: "Miguel Rodriguez",
-        role: "Student",
-        avatar: "/placeholder.svg?height=40&width=40",
+        name: 'Miguel Rodriguez',
+        role: 'Student',
+        avatar: '/SsalmukdanLogo.png?height=40&width=40',
       },
       content:
         "I'm very interested in this project! I've been researching solar panel efficiency and would love to build a demonstration model.",
-      timestamp: "1 day ago",
+      timestamp: '1 day ago',
       likes: 5,
       replies: [
         {
-          id: "r1",
+          id: 'r1',
           author: {
-            name: "Dr. Sarah Johnson",
-            role: "Science Teacher",
-            avatar: "/placeholder.svg?height=40&width=40",
+            name: 'Dr. Sarah Johnson',
+            role: 'Science Teacher',
+            avatar: '/SsalmukdanLogo.png?height=40&width=40',
           },
           content:
             "That sounds great, Miguel! I have some resources on solar panel efficiency that I can share with you. Let's set up a time to discuss your ideas in more detail.",
-          timestamp: "1 day ago",
+          timestamp: '1 day ago',
           likes: 2,
         },
         {
-          id: "r2",
+          id: 'r2',
           author: {
-            name: "Aisha Patel",
-            role: "Student",
-            avatar: "/placeholder.svg?height=40&width=40",
+            name: 'Aisha Patel',
+            role: 'Student',
+            avatar: '/SsalmukdanLogo.png?height=40&width=40',
           },
           content:
             "Miguel, I'm also interested in solar energy. Maybe we could collaborate on different aspects of solar technology?",
-          timestamp: "12 hours ago",
+          timestamp: '12 hours ago',
           likes: 1,
         },
       ],
     },
     {
-      id: "c2",
+      id: 'c2',
       author: {
-        name: "Emma Wilson",
-        role: "Student",
-        avatar: "/placeholder.svg?height=40&width=40",
+        name: 'Emma Wilson',
+        role: 'Student',
+        avatar: '/SsalmukdanLogo.png?height=40&width=40',
       },
       content:
         "I'd like to work on the hydroelectric power model. I have some questions about the scale and materials we should use.",
-      timestamp: "2 days ago",
+      timestamp: '2 days ago',
       likes: 3,
       replies: [],
     },
   ],
-}
+};
 
 // Sample related ideas
 const relatedIdeas = [
   {
-    id: "2",
-    title: "Biodiversity Mapping Project",
-    description: "Looking for students to help create a digital map of local biodiversity.",
-    tags: ["Biology", "Environment", "Technology"],
-    status: "Open",
-    author: "Prof. James Wilson",
-    postedDate: "3 days ago",
+    id: '2',
+    title: 'Biodiversity Mapping Project',
+    description: 'Looking for students to help create a digital map of local biodiversity.',
+    tags: ['Biology', 'Environment', 'Technology'],
+    status: 'Open',
+    author: 'Prof. James Wilson',
+    postedDate: '3 days ago',
   },
   {
-    id: "3",
-    title: "Sustainable Architecture Models",
-    description: "Seeking students interested in designing eco-friendly building models.",
-    tags: ["Architecture", "Environment", "Design"],
-    status: "Open",
-    author: "Dr. Lisa Patel",
-    postedDate: "1 week ago",
+    id: '3',
+    title: 'Sustainable Architecture Models',
+    description: 'Seeking students interested in designing eco-friendly building models.',
+    tags: ['Architecture', 'Environment', 'Design'],
+    status: 'Open',
+    author: 'Dr. Lisa Patel',
+    postedDate: '1 week ago',
   },
   {
-    id: "4",
-    title: "Climate Change Data Visualization",
-    description: "Looking for students to create interactive visualizations of climate data.",
-    tags: ["Data Science", "Environment", "Visualization"],
-    status: "In Progress",
-    author: "Prof. Michael Chen",
-    postedDate: "5 days ago",
+    id: '4',
+    title: 'Climate Change Data Visualization',
+    description: 'Looking for students to create interactive visualizations of climate data.',
+    tags: ['Data Science', 'Environment', 'Visualization'],
+    status: 'In Progress',
+    author: 'Prof. Michael Chen',
+    postedDate: '5 days ago',
   },
-]
+];
 
 // Status badge component
 function StatusBadge({ status }: { status: string }) {
-  let variant: "outline" | "default" | "secondary" | "destructive" = "outline"
+  let variant: 'outline' | 'default' | 'secondary' | 'destructive' = 'outline';
 
   switch (status) {
-    case "Open":
-      variant = "default"
-      break
-    case "In Progress":
-      variant = "secondary"
-      break
-    case "Completed":
-      variant = "outline"
-      break
+    case 'Open':
+      variant = 'default';
+      break;
+    case 'In Progress':
+      variant = 'secondary';
+      break;
+    case 'Completed':
+      variant = 'outline';
+      break;
   }
 
-  return <Badge variant={variant}>{status}</Badge>
+  return <Badge variant={variant}>{status}</Badge>;
 }
 
 // Comment component
 function Comment({ comment, isReply = false }: { comment: any; isReply?: boolean }) {
-  const [showReplyForm, setShowReplyForm] = useState(false)
-  const [replyText, setReplyText] = useState("")
+  const [showReplyForm, setShowReplyForm] = useState(false);
+  const [replyText, setReplyText] = useState('');
 
   return (
-    <div className={`${isReply ? "ml-12 mt-4" : "mt-6"}`}>
+    <div className={`${isReply ? 'ml-12 mt-4' : 'mt-6'}`}>
       <div className="flex gap-4">
         <Avatar className="h-10 w-10">
           <AvatarImage src={comment.author.avatar} alt={comment.author.name} />
@@ -192,8 +192,8 @@ function Comment({ comment, isReply = false }: { comment: any; isReply?: boolean
                   variant="outline"
                   size="sm"
                   onClick={() => {
-                    setShowReplyForm(false)
-                    setReplyText("")
+                    setShowReplyForm(false);
+                    setReplyText('');
                   }}
                 >
                   Cancel
@@ -202,8 +202,8 @@ function Comment({ comment, isReply = false }: { comment: any; isReply?: boolean
                   size="sm"
                   onClick={() => {
                     // Here you would typically submit the reply
-                    setShowReplyForm(false)
-                    setReplyText("")
+                    setShowReplyForm(false);
+                    setReplyText('');
                   }}
                 >
                   Post Reply
@@ -218,13 +218,13 @@ function Comment({ comment, isReply = false }: { comment: any; isReply?: boolean
       {comment.replies &&
         comment.replies.map((reply: any) => <Comment key={reply.id} comment={reply} isReply={true} />)}
     </div>
-  )
+  );
 }
 
 export default function IdeaDetailPage() {
-  const params = useParams()
-  const ideaId = params.id
-  const [newComment, setNewComment] = useState("")
+  const params = useParams();
+  const ideaId = params.id;
+  const [newComment, setNewComment] = useState('');
 
   // In a real app, you would fetch the idea data based on the ideaId
   // For now, we'll use the sample data
@@ -396,6 +396,5 @@ export default function IdeaDetailPage() {
         </div>
       </div>
     </SidebarProvider>
-  )
+  );
 }
-
