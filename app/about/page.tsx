@@ -33,8 +33,8 @@ const contributors: Contributor[] = [
   {
     name: '김담율',
     role: '',
-    githubUsername: '',
-    avatarUrl: '',
+    githubUsername: 'DAMNyul',
+    avatarUrl: 'https://github.com/DAMNyul.png',
   },
   {
     name: '문승덕',
