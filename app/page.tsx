@@ -22,12 +22,16 @@ export default function LandingPage() {
                   </h1>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button size="lg" className="gap-1">
-                    선생님의 아이디어 보기 <ChevronRight className="h-4 w-4" />
-                  </Button>
-                  <Button variant="outline" size="lg">
-                    학생들의 아이디어 보기
-                  </Button>
+                  <Link href="/ideas/teachers">
+                    <Button size="lg" className="gap-1">
+                      선생님의 아이디어 보기 <ChevronRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link href="/ideas/students">
+                    <Button variant="outline" size="lg">
+                      학생들의 아이디어 보기
+                    </Button>
+                  </Link>
                 </div>
               </div>
               <Image
