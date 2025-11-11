@@ -1,27 +1,19 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useState } from "react";
-import { BookOpen, Eye, EyeOff } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import Link from 'next/link';
+import { useState } from 'react';
+import { BookOpen, Eye, EyeOff } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function SignupPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4 py-12">
       <Card className="w-full max-w-md">
         <Link className="absolute mt-2 ml-2" href="/">
-          <Button className="bg-transparent text-slate-400 hover:bg-slate-100 rounded-full">
-            &lt;
-          </Button>
+          <Button className="bg-transparent text-slate-400 hover:bg-slate-100 rounded-full">&lt;</Button>
         </Link>
         <CardHeader className="space-y-2 text-center">
           <div className="flex justify-center mb-2">
@@ -49,11 +41,8 @@ export default function SignupPage() {
             </Link>
           </div>
           <div className="text-center text-sm">
-            이미 계정이 있으신가요?{" "}
-            <Link
-              href="/login"
-              className="font-medium text-primary hover:underline"
-            >
+            이미 계정이 있으신가요?{' '}
+            <Link href="/login" className="font-medium text-primary hover:underline">
               로그인
             </Link>
           </div>
