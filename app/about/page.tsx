@@ -37,13 +37,13 @@ const contributors: Contributor[] = [
     avatarUrl: 'https://github.com/DAMNyul.png',
   },
   {
-    name: '문승덕',
+    name: '임한솔',
     role: '',
-    githubUsername: '',
-    avatarUrl: '',
+    githubUsername: 'h-x0-i1',
+    avatarUrl: 'https://github.com/h-x0-i1.png',
   },
   {
-    name: '임한솔',
+    name: '문승덕',
     role: '',
     githubUsername: '',
     avatarUrl: '',
