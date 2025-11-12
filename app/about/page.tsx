@@ -13,16 +13,16 @@ interface Contributor {
 
 const contributors: Contributor[] = [
   {
-    name: '정효주',
-    role: 'Frontend Developer',
-    githubUsername: 'h-0y28',
-    avatarUrl: 'https://github.com/h-0y28.png',
-  },
-  {
     name: '이세민',
     role: 'Backend Developer',
     githubUsername: 'wwwcomcomcomcom',
     avatarUrl: 'https://github.com/wwwcomcomcomcom.png',
+  },
+  {
+    name: '정효주',
+    role: 'Frontend Developer',
+    githubUsername: 'h-0y28',
+    avatarUrl: 'https://github.com/h-0y28.png',
   },
   {
     name: '서정민',
