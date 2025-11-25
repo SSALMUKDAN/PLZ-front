@@ -124,20 +124,24 @@ const relatedIdeas = [
 // Status badge component
 function StatusBadge({ status }: { status: string }) {
   let variant: 'outline' | 'default' | 'secondary' | 'destructive' = 'outline';
+  let label = status;
 
   switch (status) {
     case 'Open':
       variant = 'default';
+      label = '열림';
       break;
     case 'In Progress':
       variant = 'secondary';
+      label = '진행 중';
       break;
     case 'Completed':
       variant = 'outline';
+      label = '완료';
       break;
   }
 
-  return <Badge variant={variant}>{status}</Badge>;
+  return <Badge variant={variant}>{label}</Badge>;
 }
 
 // Comment component
@@ -174,7 +178,7 @@ function Comment({ comment, isReply = false }: { comment: any; isReply?: boolean
                 onClick={() => setShowReplyForm(!showReplyForm)}
               >
                 <Reply className="h-4 w-4" />
-                <span className="text-xs">Reply</span>
+                <span className="text-xs">답글</span>
               </Button>
             )}
           </div>
@@ -182,7 +186,7 @@ function Comment({ comment, isReply = false }: { comment: any; isReply?: boolean
           {showReplyForm && (
             <div className="mt-2 space-y-2">
               <Textarea
-                placeholder="Write a reply..."
+                placeholder="답글 작성..."
                 className="min-h-[80px]"
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
@@ -196,7 +200,7 @@ function Comment({ comment, isReply = false }: { comment: any; isReply?: boolean
                     setReplyText('');
                   }}
                 >
-                  Cancel
+                  취소
                 </Button>
                 <Button
                   size="sm"
@@ -206,7 +210,7 @@ function Comment({ comment, isReply = false }: { comment: any; isReply?: boolean
                     setReplyText('');
                   }}
                 >
-                  Post Reply
+                  답글 등록
                 </Button>
               </div>
             </div>
@@ -246,7 +250,7 @@ export default function IdeaDetailPage() {
                 <SidebarMenuButton asChild>
                   <Link href="/dashboard">
                     <Home className="h-4 w-4" />
-                    <span>Dashboard</span>
+                    <span>대시보드</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -254,7 +258,7 @@ export default function IdeaDetailPage() {
                 <SidebarMenuButton asChild>
                   <Link href="/ideas/teachers">
                     <BookOpen className="h-4 w-4" />
-                    <span>Teacher Ideas</span>
+                    <span>교사 아이디어</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -262,7 +266,7 @@ export default function IdeaDetailPage() {
                 <SidebarMenuButton asChild>
                   <Link href="/ideas/students">
                     <Users className="h-4 w-4" />
-                    <span>Student Projects</span>
+                    <span>학생 아이디어</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -270,7 +274,7 @@ export default function IdeaDetailPage() {
                 <SidebarMenuButton asChild>
                   <Link href="/my-posts">
                     <User className="h-4 w-4" />
-                    <span>My Posts</span>
+                    <span>내 게시물</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -278,7 +282,7 @@ export default function IdeaDetailPage() {
                 <SidebarMenuButton asChild>
                   <Link href="/notifications">
                     <Bell className="h-4 w-4" />
-                    <span>Notifications</span>
+                    <span>알림</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -336,12 +340,12 @@ export default function IdeaDetailPage() {
 
               {/* Comments section */}
               <div>
-                <h2 className="mb-4 text-xl font-semibold">Discussion</h2>
+                <h2 className="mb-4 text-xl font-semibold">토론</h2>
 
                 {/* New comment form */}
                 <div className="space-y-2">
                   <Textarea
-                    placeholder="Add a comment..."
+                    placeholder="댓글 추가..."
                     className="min-h-[100px]"
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
@@ -349,7 +353,7 @@ export default function IdeaDetailPage() {
                   <div className="flex justify-end">
                     <Button className="gap-2">
                       <Send className="h-4 w-4" />
-                      Post Comment
+                      댓글 달기
                     </Button>
                   </div>
                 </div>
@@ -367,7 +371,7 @@ export default function IdeaDetailPage() {
             <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Related Ideas</CardTitle>
+                  <CardTitle className="text-lg">관련 아이디어</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {relatedIdeas.map((idea) => (
