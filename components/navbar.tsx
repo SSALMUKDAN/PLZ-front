@@ -1,6 +1,6 @@
 'use client';
 
-import { BookOpen } from 'lucide-react';
+import Image from 'next/image';
 import { Button } from './ui/button';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -21,10 +21,9 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2">
-          <BookOpen className="h-6 w-6 text-primary" />
-          <span className="text-xl font-bold">PLZ</span>
-        </div>
+        <Link href="/">
+          <Image src="/PLZBlackLogo.png" alt="PLZ 로고" width={40} height={40} className="object-contain" />
+        </Link>
         <nav className="hidden md:flex gap-6">
           <NavLink href="/">홈</NavLink>
           <NavLink href="/ideas/teachers">선생님 아이디어</NavLink>
