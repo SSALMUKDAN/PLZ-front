@@ -34,8 +34,9 @@ export default function Page() {
     const maxScale = 2.0; // 최대 200% 너비
     const scaleX = minScale + (maxScale - minScale) * (pct / 100);
 
-    // CSS 변수로 현재 스케일 저장
+    // CSS 변수로 현재 스케일과 색상 필터 저장
     jm.style.setProperty('--current-scale', scaleX.toString());
+    jm.style.setProperty('--red-intensity', (pct / 100).toString());
     jm.style.transform = `scaleX(${scaleX})`;
 
     jm.classList.remove('jm-slim', 'jm-fat');
@@ -272,18 +273,20 @@ export default function Page() {
           width: 320px;
           max-width: 80%;
           height: auto;
-          transition: transform 450ms cubic-bezier(0.2, 0.9, 0.2, 1);
+          transition: transform 450ms cubic-bezier(0.2, 0.9, 0.2, 1), filter 450ms ease;
           transform-origin: center center;
           border-radius: 12px;
           --current-scale: 1;
+          --red-intensity: 0.6;
+          filter: hue-rotate(calc(var(--red-intensity) * -30deg)) saturate(calc(1 + var(--red-intensity) * 0.3));
         }
 
         .jm-slim {
-          /* 색상 필터 제거 - 원본 색감 유지 */
+          /* 원본 색감 유지 */
         }
 
         .jm-fat {
-          /* 색상 필터 제거 - 원본 색감 유지 */
+          /* 붉은 색조 강화 */
         }
 
         @keyframes pop {
