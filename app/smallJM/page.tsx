@@ -207,7 +207,7 @@ export default function Page() {
       )}
 
       <div className="bg-gradient-to-br from-pink-50 to-indigo-50 min-h-screen flex items-center justify-center p-6">
-        <div className="w-full max-w-3xl mx-auto">
+        <div className="w-full max-w-5xl mx-auto">
           <header className="mb-6 text-center">
             <h1 className="text-3xl font-extrabold text-gray-800">머라구여? 정민이를 줄이고 싶다구여??</h1>
             <p className="text-sm text-gray-600 mt-2">클릭을 통해 정민이를 70kg까지 줄여주세요!!</p>
