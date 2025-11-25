@@ -275,7 +275,7 @@ export default function IdeaDetailPage() {
         </Sidebar>
 
         {/* Main content */}
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-6 pl-32">
           {/* Mobile sidebar trigger */}
           <div className="mb-4 md:hidden">
             <SidebarTrigger className="mb-4" />
@@ -348,36 +348,6 @@ export default function IdeaDetailPage() {
                   ))}
                 </div>
               </div>
-            </div>
-
-            {/* Sidebar */}
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">관련 아이디어</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {relatedIdeas.map((idea) => (
-                    <div key={idea.id} className="space-y-2">
-                      <Link href={`/ideas/${idea.id}`} className="font-medium hover:text-primary">
-                        {idea.title}
-                      </Link>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{idea.description}</p>
-                      <div className="flex flex-wrap gap-1">
-                        {idea.tags.slice(0, 2).map((tag) => (
-                          <Badge key={tag} variant="outline" className="text-xs font-normal">
-                            #{tag}
-                          </Badge>
-                        ))}
-                        {idea.tags.length > 2 && (
-                          <span className="text-xs text-muted-foreground">+{idea.tags.length - 2} more</span>
-                        )}
-                      </div>
-                      <Separator className="mt-2" />
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
             </div>
           </div>
         </div>
