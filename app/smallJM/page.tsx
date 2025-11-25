@@ -145,7 +145,7 @@ export default function Page() {
       {gameStatus === 'idle' && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30">
           <div className="bg-white rounded-xl p-8 shadow-lg text-center max-w-sm">
-            <h2 className="text-2xl font-bold mb-4">Small JM</h2>
+            <h2 className="text-2xl font-bold mb-4">정민이를 줄여라!</h2>
             <p className="text-sm text-gray-600 mb-6">목표: 70kg까지 감량하기!</p>
             <button
               onClick={() => {
@@ -250,13 +250,6 @@ export default function Page() {
                     className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg shadow"
                   >
                     클릭해서 정민이 줄이기
-                  </button>
-
-                  <button
-                    onClick={() => setFatness(100)}
-                    className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded-lg"
-                  >
-                    초기화
                   </button>
                 </div>
               </div>
