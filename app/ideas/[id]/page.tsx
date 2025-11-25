@@ -248,14 +248,6 @@ export default function IdeaDetailPage() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
-                  <Link href="/dashboard">
-                    <Home className="h-4 w-4" />
-                    <span>대시보드</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
                   <Link href="/ideas/teachers">
                     <BookOpen className="h-4 w-4" />
                     <span>교사 아이디어</span>
@@ -275,14 +267,6 @@ export default function IdeaDetailPage() {
                   <Link href="/my-posts">
                     <User className="h-4 w-4" />
                     <span>내 게시물</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="/notifications">
-                    <Bell className="h-4 w-4" />
-                    <span>알림</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -340,13 +324,12 @@ export default function IdeaDetailPage() {
 
               {/* Comments section */}
               <div>
-                <h2 className="mb-4 text-xl font-semibold">토론</h2>
+                <h2 className="mb-4 text-xl font-semibold">댓글</h2>
 
                 {/* New comment form */}
                 <div className="space-y-2">
                   <Textarea
                     placeholder="댓글 추가..."
-                    className="min-h-[100px]"
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                   />
