@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 export default function Page() {
   const jmRef = useRef<HTMLImageElement | null>(null);
@@ -11,9 +11,7 @@ export default function Page() {
   const [fatness, setFatness] = useState(80);
 
   // 게임 상태 관리: 'idle' | 'running' | 'success' | 'failure'
-  const [gameStatus, setGameStatus] = useState<
-    "idle" | "running" | "success" | "failure"
-  >("idle");
+  const [gameStatus, setGameStatus] = useState<'idle' | 'running' | 'success' | 'failure'>('idle');
   const running = useRef(false);
 
   /* -----------------------------
@@ -27,19 +25,19 @@ export default function Page() {
     if (!jm || !fatBar || !fatLabel) return;
 
     const pct = Math.max(0, Math.min(100, Math.round(fatness)));
-    fatBar.style.width = pct + "%";
+    fatBar.style.width = pct + '%';
     fatLabel.textContent = String(pct);
 
     const minW = 140;
     const maxW = 340;
     const widthPx = Math.round(minW + (maxW - minW) * (pct / 100));
-    jm.style.width = widthPx + "px";
+    jm.style.width = widthPx + 'px';
 
-    jm.classList.remove("jm-slim", "jm-fat");
-    if (pct <= 25) jm.classList.add("jm-slim");
-    else if (pct >= 70) jm.classList.add("jm-fat");
+    jm.classList.remove('jm-slim', 'jm-fat');
+    if (pct <= 25) jm.classList.add('jm-slim');
+    else if (pct >= 70) jm.classList.add('jm-fat');
 
-    jm.classList.add("jm-breathe");
+    jm.classList.add('jm-breathe');
   };
 
   /* -----------------------------
@@ -66,12 +64,12 @@ export default function Page() {
   useEffect(() => {
     updateUI();
     // 성공/실패 판정
-    if (fatness >= 100 && gameStatus === "running") {
+    if (fatness >= 100 && gameStatus === 'running') {
       running.current = false;
-      setGameStatus("failure");
-    } else if (fatness <= 3 && gameStatus === "running") {
+      setGameStatus('failure');
+    } else if (fatness <= 3 && gameStatus === 'running') {
       running.current = false;
-      setGameStatus("success");
+      setGameStatus('success');
     }
   }, [fatness]);
 
@@ -86,8 +84,8 @@ export default function Page() {
     const rect = jm.getBoundingClientRect();
 
     for (let i = 0; i < count; i++) {
-      const p = document.createElement("div");
-      p.className = "particle";
+      const p = document.createElement('div');
+      p.className = 'particle';
 
       const x = rect.width * 0.4 + (Math.random() - 0.5) * rect.width * 0.8;
       const y = rect.top + 20 + (Math.random() - 0.5) * 20;
@@ -96,18 +94,14 @@ export default function Page() {
       p.style.top = `${y - rect.top}px`;
 
       const tx = (Math.random() - 0.5) * 120;
-      p.style.setProperty("--tx", `${tx}px`);
+      p.style.setProperty('--tx', `${tx}px`);
 
       const pct = Math.round(fatness);
       if (pct <= 25)
-        p.style.background =
-          "radial-gradient(circle at 40% 30%, rgba(16,185,129,0.95), rgba(34,197,94,0.7))";
+        p.style.background = 'radial-gradient(circle at 40% 30%, rgba(16,185,129,0.95), rgba(34,197,94,0.7))';
       else if (pct >= 70)
-        p.style.background =
-          "radial-gradient(circle at 40% 30%, rgba(252,165,165,0.95), rgba(239,68,68,0.7))";
-      else
-        p.style.background =
-          "radial-gradient(circle at 40% 30%, rgba(168,85,247,0.95), rgba(139,92,246,0.7))";
+        p.style.background = 'radial-gradient(circle at 40% 30%, rgba(252,165,165,0.95), rgba(239,68,68,0.7))';
+      else p.style.background = 'radial-gradient(circle at 40% 30%, rgba(168,85,247,0.95), rgba(139,92,246,0.7))';
 
       layer.appendChild(p);
 
@@ -124,9 +118,9 @@ export default function Page() {
 
     const jm = jmRef.current;
     if (jm) {
-      jm.classList.remove("jm-pop");
+      jm.classList.remove('jm-pop');
       void jm.offsetWidth;
-      jm.classList.add("jm-pop");
+      jm.classList.add('jm-pop');
     }
 
     createParticles(10);
@@ -135,29 +129,27 @@ export default function Page() {
   /* 스페이스바 처리 */
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.code === "Space") {
+      if (e.code === 'Space') {
         e.preventDefault();
         doClickAction(1);
       }
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
   }, [fatness]);
 
   return (
     <>
       {/* 시작 / 성공 / 실패 오버레이 */}
-      {gameStatus === "idle" && (
+      {gameStatus === 'idle' && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30">
           <div className="bg-white rounded-xl p-8 shadow-lg text-center max-w-sm">
             <h2 className="text-2xl font-bold mb-4">Small JM</h2>
-            <p className="text-sm text-gray-600 mb-6">
-              시작 버튼을 눌러 플레이하세요.
-            </p>
+            <p className="text-sm text-gray-600 mb-6">시작 버튼을 눌러 플레이하세요.</p>
             <button
               onClick={() => {
                 running.current = true;
-                setGameStatus("running");
+                setGameStatus('running');
               }}
               className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold"
             >
@@ -167,18 +159,16 @@ export default function Page() {
         </div>
       )}
 
-      {gameStatus === "success" && (
+      {gameStatus === 'success' && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">
           <div className="bg-white rounded-xl p-8 shadow-lg text-center max-w-sm">
             <h2 className="text-2xl font-bold mb-4 text-green-600">성공!</h2>
-            <p className="text-sm text-gray-600 mb-6">
-              정민이를 충분히 줄였습니다 🎉
-            </p>
+            <p className="text-sm text-gray-600 mb-6">정민이를 충분히 줄였습니다 🎉</p>
             <div className="flex gap-3 justify-center">
               <button
                 onClick={() => {
                   setFatness(80);
-                  setGameStatus("idle");
+                  setGameStatus('idle');
                   running.current = false;
                 }}
                 className="px-4 py-2 bg-gray-100 rounded-lg"
@@ -190,18 +180,16 @@ export default function Page() {
         </div>
       )}
 
-      {gameStatus === "failure" && (
+      {gameStatus === 'failure' && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">
           <div className="bg-white rounded-xl p-8 shadow-lg text-center max-w-sm">
             <h2 className="text-2xl font-bold mb-4 text-red-500">실패</h2>
-            <p className="text-sm text-gray-600 mb-6">
-              정민이가 너무 커졌습니다.
-            </p>
+            <p className="text-sm text-gray-600 mb-6">정민이가 너무 커졌습니다.</p>
             <div className="flex gap-3 justify-center">
               <button
                 onClick={() => {
                   setFatness(80);
-                  setGameStatus("idle");
+                  setGameStatus('idle');
                   running.current = false;
                 }}
                 className="px-4 py-2 bg-gray-100 rounded-lg"
@@ -216,22 +204,15 @@ export default function Page() {
       <div className="bg-gradient-to-br from-pink-50 to-indigo-50 min-h-screen flex items-center justify-center p-6">
         <div className="w-full max-w-3xl mx-auto">
           <header className="mb-6 text-center">
-            <h1 className="text-3xl font-extrabold text-gray-800">
-              머라구여? 정민이를 줄이고 싶다구여??
-            </h1>
-            <p className="text-sm text-gray-600 mt-2">
-              클릭을 통해 정민이를 줄여주세요!!
-            </p>
+            <h1 className="text-3xl font-extrabold text-gray-800">머라구여? 정민이를 줄이고 싶다구여??</h1>
+            <p className="text-sm text-gray-600 mt-2">클릭을 통해 정민이를 줄여주세요!!</p>
           </header>
 
           <main className="bg-white/80 rounded-2xl p-6 shadow-lg">
             <div className="flex flex-col md:flex-row items-center gap-6">
               {/* JM 이미지 */}
               <div className="relative flex-1 flex items-center justify-center">
-                <div
-                  ref={particleLayerRef}
-                  className="absolute inset-0 pointer-events-none overflow-hidden"
-                />
+                <div ref={particleLayerRef} className="absolute inset-0 pointer-events-none overflow-hidden" />
                 <img
                   ref={jmRef}
                   src="/JM.png"
@@ -245,7 +226,7 @@ export default function Page() {
               <div className="w-full md:w-1/3">
                 <div className="mb-4">
                   <label className="text-sm font-medium text-gray-700">
-                    체중:{" "}
+                    체중:{' '}
                     <span ref={fatLabelRef} className="font-bold">
                       0
                     </span>
@@ -264,7 +245,7 @@ export default function Page() {
                     onClick={() => doClickAction(2)}
                     className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg shadow"
                   >
-                    클릭해서 살 빼기
+                    클릭해서 정민이 줄이기
                   </button>
 
                   <button
@@ -277,9 +258,7 @@ export default function Page() {
               </div>
             </div>
 
-            <footer className="text-xs text-gray-500 mt-6 text-center">
-              Small JM
-            </footer>
+            <footer className="text-xs text-gray-500 mt-6 text-center">Small JM</footer>
           </main>
         </div>
       </div>
@@ -291,12 +270,11 @@ export default function Page() {
         .jm-img {
           width: 220px;
           max-width: 70%;
-          transition: transform 450ms cubic-bezier(0.2, 0.9, 0.2, 1),
-            filter 400ms ease, width 450ms cubic-bezier(0.2, 0.9, 0.2, 1);
+          transition: transform 450ms cubic-bezier(0.2, 0.9, 0.2, 1), filter 400ms ease,
+            width 450ms cubic-bezier(0.2, 0.9, 0.2, 1);
           transform-origin: center center;
           border-radius: 12px;
-          box-shadow: 0 12px 30px rgba(99, 102, 241, 0.12),
-            0 6px 12px rgba(15, 23, 42, 0.06);
+          box-shadow: 0 12px 30px rgba(99, 102, 241, 0.12), 0 6px 12px rgba(15, 23, 42, 0.06);
         }
 
         /* 가로로만 늘어나게 scaleX 사용 */
@@ -349,11 +327,7 @@ export default function Page() {
           opacity: 0;
           transform: translate3d(0, 0, 0);
           will-change: transform, opacity;
-          background: radial-gradient(
-            circle at 40% 30%,
-            rgba(255, 255, 255, 0.95),
-            rgba(255, 255, 255, 0.6)
-          );
+          background: radial-gradient(circle at 40% 30%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6));
           box-shadow: 0 4px 18px rgba(99, 102, 241, 0.22);
           animation: particle-fly 900ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
         }
