@@ -29,10 +29,14 @@ export default function Page() {
     fatBar.style.width = pct + '%';
     fatLabel.textContent = kg + 'kg';
 
-    const minW = 140;
-    const maxW = 340;
-    const widthPx = Math.round(minW + (maxW - minW) * (pct / 100));
-    jm.style.width = widthPx + 'px';
+    // 더 극적인 가로 변화를 위해 scaleX 사용
+    const minScale = 0.5; // 최소 50% 너비
+    const maxScale = 2.0; // 최대 200% 너비
+    const scaleX = minScale + (maxScale - minScale) * (pct / 100);
+
+    // CSS 변수로 현재 스케일 저장
+    jm.style.setProperty('--current-scale', scaleX.toString());
+    jm.style.transform = `scaleX(${scaleX})`;
 
     jm.classList.remove('jm-slim', 'jm-fat');
     if (kg <= 80) jm.classList.add('jm-slim');
@@ -267,33 +271,30 @@ export default function Page() {
         .jm-img {
           width: 220px;
           max-width: 70%;
-          transition: transform 450ms cubic-bezier(0.2, 0.9, 0.2, 1), filter 400ms ease,
-            width 450ms cubic-bezier(0.2, 0.9, 0.2, 1);
+          height: auto;
+          transition: transform 450ms cubic-bezier(0.2, 0.9, 0.2, 1), filter 400ms ease;
           transform-origin: center center;
           border-radius: 12px;
-          box-shadow: 0 12px 30px rgba(99, 102, 241, 0.12), 0 6px 12px rgba(15, 23, 42, 0.06);
+          --current-scale: 1;
         }
 
-        /* 가로로만 늘어나게 scaleX 사용 */
         .jm-slim {
-          transform: translateY(-6px) scaleX(0.88);
-          filter: saturate(1.05) drop-shadow(0 6px 18px rgba(34, 197, 94, 0.12));
+          filter: saturate(1.05) hue-rotate(90deg);
         }
 
         .jm-fat {
-          transform: translateY(0) scaleX(1.12);
-          filter: saturate(0.9) drop-shadow(0 16px 34px rgba(239, 68, 68, 0.1));
+          filter: saturate(0.9) hue-rotate(-30deg);
         }
 
         @keyframes pop {
           0% {
-            transform: scaleX(1);
+            transform: scaleX(var(--current-scale)) scaleY(1);
           }
           40% {
-            transform: scaleX(1.14);
+            transform: scaleX(calc(var(--current-scale) * 1.1)) scaleY(0.95);
           }
           100% {
-            transform: scaleX(1);
+            transform: scaleX(var(--current-scale)) scaleY(1);
           }
         }
         .jm-pop {
@@ -302,13 +303,13 @@ export default function Page() {
 
         @keyframes breathe {
           0% {
-            transform: translateY(0) scaleX(1);
+            transform: scaleX(var(--current-scale)) translateY(0);
           }
           50% {
-            transform: translateY(-4px) scaleX(1.03);
+            transform: scaleX(var(--current-scale)) translateY(-4px);
           }
           100% {
-            transform: translateY(0) scaleX(1);
+            transform: scaleX(var(--current-scale)) translateY(0);
           }
         }
         .jm-breathe {
@@ -325,7 +326,6 @@ export default function Page() {
           transform: translate3d(0, 0, 0);
           will-change: transform, opacity;
           background: radial-gradient(circle at 40% 30%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6));
-          box-shadow: 0 4px 18px rgba(99, 102, 241, 0.22);
           animation: particle-fly 900ms cubic-bezier(0.2, 0.9, 0.2, 1) forwards;
         }
 
@@ -344,9 +344,6 @@ export default function Page() {
           .jm-img {
             width: 160px;
           }
-        }
-        /* 오버레이 z-index 보정용 */
-        .overlay-button {
         }
       `}</style>
     </>
