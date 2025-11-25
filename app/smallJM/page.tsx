@@ -272,18 +272,18 @@ export default function Page() {
           width: 220px;
           max-width: 70%;
           height: auto;
-          transition: transform 450ms cubic-bezier(0.2, 0.9, 0.2, 1), filter 400ms ease;
+          transition: transform 450ms cubic-bezier(0.2, 0.9, 0.2, 1);
           transform-origin: center center;
           border-radius: 12px;
           --current-scale: 1;
         }
 
         .jm-slim {
-          filter: saturate(1.05) hue-rotate(90deg);
+          /* 색상 필터 제거 - 원본 색감 유지 */
         }
 
         .jm-fat {
-          filter: saturate(0.9) hue-rotate(-30deg);
+          /* 색상 필터 제거 - 원본 색감 유지 */
         }
 
         @keyframes pop {
