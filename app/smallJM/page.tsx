@@ -269,8 +269,8 @@ export default function Page() {
       {/* ----------------------------- */}
       <style jsx global>{`
         .jm-img {
-          width: 220px;
-          max-width: 70%;
+          width: 320px;
+          max-width: 80%;
           height: auto;
           transition: transform 450ms cubic-bezier(0.2, 0.9, 0.2, 1);
           transform-origin: center center;
@@ -342,7 +342,7 @@ export default function Page() {
 
         @media (max-width: 640px) {
           .jm-img {
-            width: 160px;
+            width: 240px;
           }
         }
       `}</style>
