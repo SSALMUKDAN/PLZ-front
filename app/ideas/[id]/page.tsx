@@ -20,6 +20,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import Navbar from '@/components/navbar';
 
 // Sample idea data
 const ideaData = {
@@ -235,53 +236,16 @@ export default function IdeaDetailPage() {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen">
-        {/* Sidebar */}
-        <Sidebar>
-          <SidebarHeader className="border-b">
-            <div className="flex items-center gap-2 px-4 py-2">
-              <BookOpen className="h-6 w-6 text-primary" />
-              <span className="text-xl font-bold">PLZ</span>
-            </div>
-          </SidebarHeader>
-          <SidebarContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="/ideas/teachers">
-                    <BookOpen className="h-4 w-4" />
-                    <span>교사 아이디어</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="/ideas/students">
-                    <Users className="h-4 w-4" />
-                    <span>학생 아이디어</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <Link href="/my-posts">
-                    <User className="h-4 w-4" />
-                    <span>내 게시물</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-          </SidebarContent>
-        </Sidebar>
-
+      <div className="flex min-h-screen flex-col">
+        <Navbar />
         {/* Main content */}
-        <div className="flex-1 p-6 pl-32">
+        <div className="pt-16 flex items-center px-96">
           {/* Mobile sidebar trigger */}
           <div className="mb-4 md:hidden">
             <SidebarTrigger className="mb-4" />
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
+          <div className="grid gap-6 ">
             {/* Main content area */}
             <div className="space-y-6">
               {/* Idea details */}
