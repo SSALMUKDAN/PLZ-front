@@ -8,7 +8,7 @@ export default function Page() {
   const fatLabelRef = useRef<HTMLSpanElement | null>(null);
   const particleLayerRef = useRef<HTMLDivElement | null>(null);
 
-  const [fatness, setFatness] = useState(80);
+  const [fatness, setFatness] = useState(100); // 100kg으로 시작
 
   // 게임 상태 관리: 'idle' | 'running' | 'success' | 'failure'
   const [gameStatus, setGameStatus] = useState<'idle' | 'running' | 'success' | 'failure'>('idle');
@@ -24,9 +24,10 @@ export default function Page() {
 
     if (!jm || !fatBar || !fatLabel) return;
 
-    const pct = Math.max(0, Math.min(100, Math.round(fatness)));
+    const kg = Math.max(70, Math.min(120, Math.round(fatness)));
+    const pct = ((kg - 70) / 50) * 100;
     fatBar.style.width = pct + '%';
-    fatLabel.textContent = String(pct);
+    fatLabel.textContent = kg + 'kg';
 
     const minW = 140;
     const maxW = 340;
@@ -34,8 +35,8 @@ export default function Page() {
     jm.style.width = widthPx + 'px';
 
     jm.classList.remove('jm-slim', 'jm-fat');
-    if (pct <= 25) jm.classList.add('jm-slim');
-    else if (pct >= 70) jm.classList.add('jm-fat');
+    if (kg <= 80) jm.classList.add('jm-slim');
+    else if (kg >= 110) jm.classList.add('jm-fat');
 
     jm.classList.add('jm-breathe');
   };
@@ -45,15 +46,15 @@ export default function Page() {
   ------------------------------ */
   useEffect(() => {
     let lastTime = performance.now();
-    // 매우 높은 난이도: 초당 증가율을 크게 올림
-    const increaseRate = 8; // 초당 8%
+    // 초당 4kg 증가
+    const increaseRate = 4;
 
     const tick = (now: number) => {
       const dt = (now - lastTime) / 1000;
       lastTime = now;
 
       if (running.current) {
-        setFatness((f) => Math.min(100, f + increaseRate * dt));
+        setFatness((f) => Math.min(120, f + increaseRate * dt));
       }
       requestAnimationFrame(tick);
     };
@@ -64,10 +65,10 @@ export default function Page() {
   useEffect(() => {
     updateUI();
     // 성공/실패 판정
-    if (fatness >= 100 && gameStatus === 'running') {
+    if (fatness >= 120 && gameStatus === 'running') {
       running.current = false;
       setGameStatus('failure');
-    } else if (fatness <= 3 && gameStatus === 'running') {
+    } else if (fatness <= 70 && gameStatus === 'running') {
       running.current = false;
       setGameStatus('success');
     }
@@ -96,10 +97,10 @@ export default function Page() {
       const tx = (Math.random() - 0.5) * 120;
       p.style.setProperty('--tx', `${tx}px`);
 
-      const pct = Math.round(fatness);
-      if (pct <= 25)
+      const kg = Math.round(fatness);
+      if (kg <= 80)
         p.style.background = 'radial-gradient(circle at 40% 30%, rgba(16,185,129,0.95), rgba(34,197,94,0.7))';
-      else if (pct >= 70)
+      else if (kg >= 110)
         p.style.background = 'radial-gradient(circle at 40% 30%, rgba(252,165,165,0.95), rgba(239,68,68,0.7))';
       else p.style.background = 'radial-gradient(circle at 40% 30%, rgba(168,85,247,0.95), rgba(139,92,246,0.7))';
 
@@ -112,9 +113,9 @@ export default function Page() {
   /* -----------------------------
       클릭 액션
   ------------------------------ */
-  // 클릭으로 줄이는 양을 아주 작게 설정 (더 어려움)
-  const doClickAction = (amount = 1) => {
-    setFatness((f) => Math.max(0, f - amount));
+  // 클릭으로 0.5kg 감소
+  const doClickAction = (amount = 0.5) => {
+    setFatness((f) => Math.max(70, f - amount));
 
     const jm = jmRef.current;
     if (jm) {
@@ -131,7 +132,7 @@ export default function Page() {
     const handler = (e: KeyboardEvent) => {
       if (e.code === 'Space') {
         e.preventDefault();
-        doClickAction(1);
+        doClickAction(0.5);
       }
     };
     window.addEventListener('keydown', handler);
@@ -145,7 +146,7 @@ export default function Page() {
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/30">
           <div className="bg-white rounded-xl p-8 shadow-lg text-center max-w-sm">
             <h2 className="text-2xl font-bold mb-4">Small JM</h2>
-            <p className="text-sm text-gray-600 mb-6">시작 버튼을 눌러 플레이하세요.</p>
+            <p className="text-sm text-gray-600 mb-6">목표: 70kg까지 감량하기!</p>
             <button
               onClick={() => {
                 running.current = true;
@@ -163,11 +164,11 @@ export default function Page() {
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">
           <div className="bg-white rounded-xl p-8 shadow-lg text-center max-w-sm">
             <h2 className="text-2xl font-bold mb-4 text-green-600">성공!</h2>
-            <p className="text-sm text-gray-600 mb-6">정민이를 충분히 줄였습니다 🎉</p>
+            <p className="text-sm text-gray-600 mb-6">정민이가 70kg 달성! 🎉</p>
             <div className="flex gap-3 justify-center">
               <button
                 onClick={() => {
-                  setFatness(80);
+                  setFatness(100);
                   setGameStatus('idle');
                   running.current = false;
                 }}
@@ -184,11 +185,11 @@ export default function Page() {
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/40">
           <div className="bg-white rounded-xl p-8 shadow-lg text-center max-w-sm">
             <h2 className="text-2xl font-bold mb-4 text-red-500">실패</h2>
-            <p className="text-sm text-gray-600 mb-6">정민이가 너무 커졌습니다.</p>
+            <p className="text-sm text-gray-600 mb-6">정민이가 120kg이 되었습니다.</p>
             <div className="flex gap-3 justify-center">
               <button
                 onClick={() => {
-                  setFatness(80);
+                  setFatness(100);
                   setGameStatus('idle');
                   running.current = false;
                 }}
@@ -205,7 +206,7 @@ export default function Page() {
         <div className="w-full max-w-3xl mx-auto">
           <header className="mb-6 text-center">
             <h1 className="text-3xl font-extrabold text-gray-800">머라구여? 정민이를 줄이고 싶다구여??</h1>
-            <p className="text-sm text-gray-600 mt-2">클릭을 통해 정민이를 줄여주세요!!</p>
+            <p className="text-sm text-gray-600 mt-2">클릭을 통해 정민이를 70kg까지 줄여주세요!!</p>
           </header>
 
           <main className="bg-white/80 rounded-2xl p-6 shadow-lg">
@@ -218,7 +219,7 @@ export default function Page() {
                   src="/JM.png"
                   alt="JM"
                   className="jm-img select-none cursor-pointer"
-                  onClick={() => doClickAction(2)}
+                  onClick={() => doClickAction(1)}
                 />
               </div>
 
@@ -228,9 +229,8 @@ export default function Page() {
                   <label className="text-sm font-medium text-gray-700">
                     체중:{' '}
                     <span ref={fatLabelRef} className="font-bold">
-                      0
+                      100kg
                     </span>
-                    %
                   </label>
                   <div className="w-full h-3 bg-gray-200 rounded-full mt-2 overflow-hidden">
                     <div
@@ -238,18 +238,22 @@ export default function Page() {
                       className="h-full bg-gradient-to-r from-green-400 to-red-400 w-0 transition-all"
                     />
                   </div>
+                  <div className="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>70kg</span>
+                    <span>120kg</span>
+                  </div>
                 </div>
 
                 <div className="space-y-3">
                   <button
-                    onClick={() => doClickAction(2)}
+                    onClick={() => doClickAction(1)}
                     className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg shadow"
                   >
                     클릭해서 정민이 줄이기
                   </button>
 
                   <button
-                    onClick={() => setFatness(80)}
+                    onClick={() => setFatness(100)}
                     className="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded-lg"
                   >
                     초기화
