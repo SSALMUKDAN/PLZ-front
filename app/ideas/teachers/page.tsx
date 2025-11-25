@@ -89,7 +89,7 @@ function StatusBadge({ status }: { status: string }) {
   switch (status) {
     case 'Open':
       variant = 'default';
-      label = '열림';
+      label = '모집중';
       break;
     case 'In Progress':
       variant = 'secondary';
