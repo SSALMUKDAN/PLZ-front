@@ -89,7 +89,11 @@ function StatusBadge({ status }: { status: string }) {
       break;
   }
 
-  return <Badge variant={variant}>{status}</Badge>;
+  return (
+    <Badge variant={variant} className="whitespace-nowrap">
+      {status}
+    </Badge>
+  );
 }
 
 export default function StudentIdeasPage() {
@@ -148,7 +152,7 @@ export default function StudentIdeasPage() {
                 <p className="text-muted-foreground mb-4">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="font-normal">
+                    <Badge key={tag} variant="secondary" className="font-normal whitespace-nowrap">
                       {tag}
                     </Badge>
                   ))}

@@ -101,10 +101,9 @@ function StatusBadge({ status }: { status: string }) {
       break;
   }
 
-  // 줄바꿈 방지를 위해 whitespace-nowrap 추가
   return (
     <Badge variant={variant} className="whitespace-nowrap">
-      {label}
+      {status}
     </Badge>
   );
 }

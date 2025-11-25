@@ -142,7 +142,11 @@ function StatusBadge({ status }: { status: string }) {
       break;
   }
 
-  return <Badge variant={variant}>{label}</Badge>;
+  return (
+    <Badge variant={variant} className="whitespace-nowrap">
+      {label}
+    </Badge>
+  );
 }
 
 // Comment component
@@ -277,7 +281,8 @@ export default function IdeaDetailPage() {
 
                 <div className="flex flex-wrap gap-2">
                   {ideaData.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="font-normal">
+                    // 태그의 줄바꿈을 방지하기 위해 whitespace-nowrap 추가
+                    <Badge key={tag} variant="secondary" className="font-normal whitespace-nowrap">
                       #{tag}
                     </Badge>
                   ))}
@@ -312,6 +317,34 @@ export default function IdeaDetailPage() {
                   ))}
                 </div>
               </div>
+            </div>
+
+            {/* Related ideas */}
+            <div>
+              <h2 className="mb-4 text-xl font-semibold">관련 아이디어</h2>
+              <Card>
+                <CardContent className="space-y-4">
+                  {relatedIdeas.map((idea) => (
+                    <div key={idea.id} className="space-y-2">
+                      <Link href={`/ideas/${idea.id}`} className="font-medium hover:text-primary">
+                        {idea.title}
+                      </Link>
+                      <p className="text-xs text-muted-foreground line-clamp-2">{idea.description}</p>
+                      <div className="flex flex-wrap gap-1">
+                        {idea.tags.slice(0, 2).map((tag) => (
+                          <Badge key={tag} variant="outline" className="text-xs font-normal whitespace-nowrap">
+                            #{tag}
+                          </Badge>
+                        ))}
+                        {idea.tags.length > 2 && (
+                          <span className="text-xs text-muted-foreground">+{idea.tags.length - 2} more</span>
+                        )}
+                      </div>
+                      <Separator className="mt-2" />
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
             </div>
           </div>
         </div>
