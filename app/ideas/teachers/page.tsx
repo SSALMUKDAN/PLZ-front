@@ -101,7 +101,12 @@ function StatusBadge({ status }: { status: string }) {
       break;
   }
 
-  return <Badge variant={variant}>{label}</Badge>;
+  // 줄바꿈 방지를 위해 whitespace-nowrap 추가
+  return (
+    <Badge variant={variant} className="whitespace-nowrap">
+      {label}
+    </Badge>
+  );
 }
 
 export default function IdeasPage() {
@@ -153,6 +158,7 @@ export default function IdeasPage() {
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-start">
                   <CardTitle className="text-xl">{idea.title}</CardTitle>
+
                   <StatusBadge status={idea.status} />
                 </div>
               </CardHeader>
@@ -160,7 +166,7 @@ export default function IdeasPage() {
                 <p className="text-muted-foreground mb-4">{idea.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {idea.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="font-normal">
+                    <Badge key={tag} variant="secondary" className="font-normal whitespace-nowrap">
                       {tag}
                     </Badge>
                   ))}
