@@ -35,7 +35,7 @@ const teacherIdeas = [
     comments: 12,
     status: 'Open',
     author: 'Dr. Sarah Johnson',
-    postedDate: '2 days ago',
+    postedDate: '2일 전',
   },
   {
     id: 2,
@@ -46,7 +46,7 @@ const teacherIdeas = [
     comments: 8,
     status: 'In Progress',
     author: 'Prof. Michael Chen',
-    postedDate: '1 week ago',
+    postedDate: '1주 전',
   },
   {
     id: 3,
@@ -57,7 +57,7 @@ const teacherIdeas = [
     comments: 15,
     status: 'Open',
     author: 'Dr. Emily Rodriguez',
-    postedDate: '3 days ago',
+    postedDate: '3일 전',
   },
   {
     id: 4,
@@ -67,7 +67,7 @@ const teacherIdeas = [
     comments: 6,
     status: 'Completed',
     author: 'Prof. James Wilson',
-    postedDate: '1 month ago',
+    postedDate: '1개월 전',
   },
   {
     id: 5,
@@ -77,27 +77,31 @@ const teacherIdeas = [
     comments: 20,
     status: 'In Progress',
     author: 'Dr. Lisa Patel',
-    postedDate: '2 weeks ago',
+    postedDate: '2주 전',
   },
 ];
 
 // Status badge component
 function StatusBadge({ status }: { status: string }) {
   let variant: 'outline' | 'default' | 'secondary' | 'destructive' = 'outline';
+  let label = status;
 
   switch (status) {
     case 'Open':
       variant = 'default';
+      label = '열림';
       break;
     case 'In Progress':
       variant = 'secondary';
+      label = '진행 중';
       break;
     case 'Completed':
       variant = 'outline';
+      label = '완료';
       break;
   }
 
-  return <Badge variant={variant}>{status}</Badge>;
+  return <Badge variant={variant}>{label}</Badge>;
 }
 
 export default function IdeasPage() {
@@ -119,8 +123,8 @@ export default function IdeasPage() {
       <div className="flex-1 p-6">
         <header className="mb-8 flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Teacher Ideas</h1>
-            <p className="text-muted-foreground">Browse project ideas posted by teachers</p>
+            <h1 className="text-3xl font-bold">교사 아이디어</h1>
+            <p className="text-muted-foreground">교사가 게시한 프로젝트 아이디어를 둘러보세요</p>
           </div>
           <div className="flex items-center gap-4">
             <DropdownMenu>
@@ -165,7 +169,7 @@ export default function IdeasPage() {
               <CardFooter className="pt-3 border-t flex justify-between items-center text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <MessageSquare className="h-4 w-4" />
-                  <span>{idea.comments} comments</span>
+                  <span>{idea.comments} 댓글</span>
                 </div>
                 <div>
                   <span>{idea.postedDate}</span>
