@@ -34,7 +34,7 @@ export default function Page() {
     const maxScale = 2.0; // 최대 200% 너비
     const scaleX = minScale + (maxScale - minScale) * (pct / 100);
 
-    // 105kg부터 붉어지기 시작 (105kg~120kg 구간에서 0~1)
+    // 105kg부터 붉어지기 시작 (105~120kg 구간에서 0~1)
     let redIntensity = 0;
     if (kg >= 105) {
       redIntensity = Math.min(1, (kg - 105) / 15); // 105~120kg 구간에서 0~1
@@ -78,12 +78,122 @@ export default function Page() {
     // 성공/실패 판정
     if (fatness >= 120 && gameStatus === 'running') {
       running.current = false;
+      createExplosion(); // 폭발 애니메이션 실행
       setGameStatus('failure');
     } else if (fatness <= 70 && gameStatus === 'running') {
       running.current = false;
       setGameStatus('success');
     }
   }, [fatness]);
+
+  /* -----------------------------
+      폭발 애니메이션
+  ------------------------------ */
+  const createExplosion = () => {
+    const jm = jmRef.current;
+    const layer = particleLayerRef.current;
+    if (!jm || !layer) return;
+
+    // 숨기기 전에 이미지 복사해서 조각내기
+    const rect = jm.getBoundingClientRect();
+    const layerRect = layer.getBoundingClientRect();
+    const imageX = rect.left - layerRect.left;
+    const imageY = rect.top - layerRect.top;
+
+    // 원본 이미지 즉시 숨김
+    jm.style.opacity = '0';
+
+    // 이미지를 9개 조각으로 분할해서 각각 날려보내기
+    const pieces = 9; // 3x3 조각
+    const pieceWidth = rect.width / 3;
+    const pieceHeight = rect.height / 3;
+
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 3; col++) {
+        const piece = document.createElement('div');
+        piece.className = 'image-piece';
+
+        // 조각 위치 설정
+        piece.style.left = `${imageX + col * pieceWidth}px`;
+        piece.style.top = `${imageY + row * pieceHeight}px`;
+        piece.style.width = `${pieceWidth}px`;
+        piece.style.height = `${pieceHeight}px`;
+
+        // 배경 이미지로 해당 조각 부분만 보이게 설정
+        piece.style.backgroundImage = `url(/JM.png)`;
+        piece.style.backgroundSize = `${rect.width}px ${rect.height}px`;
+        piece.style.backgroundPosition = `-${col * pieceWidth}px -${row * pieceHeight}px`;
+
+        // 폭발 방향 계산 (중심에서 바깥쪽으로)
+        const centerX = imageX + rect.width / 2;
+        const centerY = imageY + rect.height / 2;
+        const pieceX = imageX + col * pieceWidth + pieceWidth / 2;
+        const pieceY = imageY + row * pieceHeight + pieceHeight / 2;
+
+        const angle = Math.atan2(pieceY - centerY, pieceX - centerX);
+        const distance = 200 + Math.random() * 150;
+        const tx = Math.cos(angle) * distance;
+        const ty = Math.sin(angle) * distance;
+
+        piece.style.setProperty('--tx', `${tx}px`);
+        piece.style.setProperty('--ty', `${ty}px`);
+        piece.style.setProperty('--rotation', `${(Math.random() - 0.5) * 720}deg`);
+
+        layer.appendChild(piece);
+
+        // 조각 제거
+        setTimeout(() => piece.remove(), 1500);
+      }
+    }
+
+    // 폭발 효과들
+    const centerX = imageX + rect.width / 2;
+    const centerY = imageY + rect.height / 2;
+
+    // 큰 폭발 플래시
+    const flash = document.createElement('div');
+    flash.className = 'explosion-flash';
+    flash.style.left = `${centerX}px`;
+    flash.style.top = `${centerY}px`;
+    layer.appendChild(flash);
+    setTimeout(() => flash.remove(), 400);
+
+    // 폭발 링들
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        const ring = document.createElement('div');
+        ring.className = 'explosion-ring';
+        ring.style.left = `${centerX}px`;
+        ring.style.top = `${centerY}px`;
+        layer.appendChild(ring);
+        setTimeout(() => ring.remove(), 1000);
+      }, i * 150);
+    }
+
+    // 작은 파편들
+    for (let i = 0; i < 20; i++) {
+      const fragment = document.createElement('div');
+      fragment.className = 'explosion-fragment';
+
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 80 + Math.random() * 120;
+      const tx = Math.cos(angle) * distance;
+      const ty = Math.sin(angle) * distance;
+
+      fragment.style.left = `${centerX}px`;
+      fragment.style.top = `${centerY}px`;
+      fragment.style.setProperty('--tx', `${tx}px`);
+      fragment.style.setProperty('--ty', `${ty}px`);
+
+      const size = 4 + Math.random() * 6;
+      fragment.style.width = `${size}px`;
+      fragment.style.height = `${size}px`;
+      fragment.style.backgroundColor = '#ff6b35';
+
+      layer.appendChild(fragment);
+      setTimeout(() => fragment.remove(), 1000);
+    }
+  };
 
   /* -----------------------------
       파티클 생성
@@ -179,6 +289,12 @@ export default function Page() {
             <div className="flex gap-3 justify-center">
               <button
                 onClick={() => {
+                  const jm = jmRef.current;
+                  if (jm) {
+                    // 이미지 복원
+                    jm.style.opacity = '1';
+                    jm.classList.remove('jm-explode');
+                  }
                   setFatness(100);
                   setGameStatus('idle');
                   running.current = false;
@@ -200,6 +316,12 @@ export default function Page() {
             <div className="flex gap-3 justify-center">
               <button
                 onClick={() => {
+                  const jm = jmRef.current;
+                  if (jm) {
+                    // 이미지 복원
+                    jm.style.opacity = '1';
+                    jm.classList.remove('jm-explode');
+                  }
                   setFatness(100);
                   setGameStatus('idle');
                   running.current = false;
@@ -279,7 +401,7 @@ export default function Page() {
           width: 320px;
           max-width: 80%;
           height: auto;
-          transition: transform 450ms cubic-bezier(0.2, 0.9, 0.2, 1), filter 450ms ease;
+          transition: transform 450ms cubic-bezier(0.2, 0.9, 0.2, 1), filter 450ms ease, opacity 100ms ease;
           transform-origin: center center;
           border-radius: 12px;
           --current-scale: 1;
@@ -294,6 +416,140 @@ export default function Page() {
 
         .jm-fat {
           /* 붉고 어둡게 */
+        }
+
+        /* 폭발 애니메이션 - 더 극적으로 */
+        @keyframes explode {
+          0% {
+            transform: scaleX(var(--current-scale)) scaleY(1) rotate(0deg);
+            filter: brightness(1) contrast(1);
+          }
+          25% {
+            transform: scaleX(calc(var(--current-scale) * 1.5)) scaleY(1.3) rotate(5deg);
+            filter: brightness(3) contrast(2);
+          }
+          50% {
+            transform: scaleX(calc(var(--current-scale) * 2)) scaleY(1.8) rotate(-3deg);
+            filter: brightness(5) contrast(3) hue-rotate(180deg);
+          }
+          100% {
+            transform: scaleX(0) scaleY(0) rotate(180deg);
+            filter: brightness(0) contrast(0);
+            opacity: 0;
+          }
+        }
+        .jm-explode {
+          animation: explode 600ms cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+
+        /* 이미지 조각 폭발 */
+        .image-piece {
+          position: absolute;
+          background-repeat: no-repeat;
+          border-radius: 2px;
+          pointer-events: none;
+          animation: piece-explode 1500ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes piece-explode {
+          0% {
+            transform: translate(0, 0) rotate(0deg) scale(1);
+            opacity: 1;
+          }
+          20% {
+            transform: translate(calc(var(--tx) * 0.1), calc(var(--ty) * 0.1)) rotate(calc(var(--rotation) * 0.1))
+              scale(1.1);
+            opacity: 1;
+          }
+          100% {
+            transform: translate(var(--tx), calc(var(--ty) + 200px)) rotate(var(--rotation)) scale(0.3);
+            opacity: 0;
+          }
+        }
+
+        /* 폭발 플래시 - 더 강렬하게 */
+        .explosion-flash {
+          position: absolute;
+          width: 80px;
+          height: 80px;
+          background: radial-gradient(circle, #ffffff 0%, #ffff00 30%, #ff4500 70%, transparent 100%);
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+          animation: mega-flash 400ms ease-out forwards;
+          z-index: 20;
+        }
+
+        @keyframes mega-flash {
+          0% {
+            width: 80px;
+            height: 80px;
+            opacity: 1;
+            box-shadow: 0 0 50px #ffff00;
+          }
+          30% {
+            width: 300px;
+            height: 300px;
+            opacity: 0.9;
+            box-shadow: 0 0 100px #ff4500;
+          }
+          100% {
+            width: 500px;
+            height: 500px;
+            opacity: 0;
+            box-shadow: 0 0 200px transparent;
+          }
+        }
+
+        /* 폭발 링 - 더 선명하게 */
+        .explosion-ring {
+          position: absolute;
+          width: 40px;
+          height: 40px;
+          border: 6px solid #ff4757;
+          border-radius: 50%;
+          transform: translate(-50%, -50%);
+          pointer-events: none;
+          animation: super-ring-expand 1000ms ease-out forwards;
+          box-shadow: 0 0 30px #ff4757, inset 0 0 30px rgba(255, 71, 87, 0.5);
+        }
+
+        @keyframes super-ring-expand {
+          0% {
+            width: 40px;
+            height: 40px;
+            opacity: 1;
+            border-width: 6px;
+          }
+          50% {
+            opacity: 0.8;
+          }
+          100% {
+            width: 400px;
+            height: 400px;
+            opacity: 0;
+            border-width: 0px;
+          }
+        }
+
+        /* 폭발 파편 */
+        .explosion-fragment {
+          position: absolute;
+          border-radius: 50%;
+          pointer-events: none;
+          animation: fragment-boom 1000ms cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes fragment-boom {
+          0% {
+            transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            opacity: 1;
+          }
+          100% {
+            transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty) + 100px)) scale(0) rotate(360deg);
+            opacity: 0;
+          }
         }
 
         @keyframes pop {
