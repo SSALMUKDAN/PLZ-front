@@ -247,7 +247,7 @@ export default function Page() {
                 <div className="space-y-3">
                   <button
                     onClick={() => doClickAction(1)}
-                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg shadow"
+                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-5 rounded-lg shadow"
                   >
                     클릭해서 정민이 줄이기
                   </button>
