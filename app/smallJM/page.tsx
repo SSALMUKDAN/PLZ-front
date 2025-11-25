@@ -34,9 +34,15 @@ export default function Page() {
     const maxScale = 2.0; // 최대 200% 너비
     const scaleX = minScale + (maxScale - minScale) * (pct / 100);
 
+    // 105kg부터 붉어지기 시작 (105kg~120kg 구간에서 0~1)
+    let redIntensity = 0;
+    if (kg >= 105) {
+      redIntensity = Math.min(1, (kg - 105) / 15); // 105~120kg 구간에서 0~1
+    }
+
     // CSS 변수로 현재 스케일과 색상 필터 저장
     jm.style.setProperty('--current-scale', scaleX.toString());
-    jm.style.setProperty('--red-intensity', (pct / 100).toString());
+    jm.style.setProperty('--red-intensity', redIntensity.toString());
     jm.style.transform = `scaleX(${scaleX})`;
 
     jm.classList.remove('jm-slim', 'jm-fat');
@@ -277,8 +283,9 @@ export default function Page() {
           transform-origin: center center;
           border-radius: 12px;
           --current-scale: 1;
-          --red-intensity: 0.6;
-          filter: hue-rotate(calc(var(--red-intensity) * -30deg)) saturate(calc(1 + var(--red-intensity) * 0.3));
+          --red-intensity: 0;
+          filter: hue-rotate(calc(var(--red-intensity) * -30deg)) saturate(calc(1 + var(--red-intensity) * 0.3))
+            brightness(calc(1 - var(--red-intensity) * 0.4));
         }
 
         .jm-slim {
@@ -286,7 +293,7 @@ export default function Page() {
         }
 
         .jm-fat {
-          /* 붉은 색조 강화 */
+          /* 붉고 어둡게 */
         }
 
         @keyframes pop {
