@@ -108,7 +108,7 @@ export default function StudentIdeasPage() {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       {/* Main content */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 px-48">
         <header className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold">학생 아이디어</h1>
