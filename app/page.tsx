@@ -120,7 +120,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer id="contact" className="w-full border-t bg-background py-6">
-        <div className="container flex flex-col items-center justify-between gap-4 md:flex-row px-4 md:px-6">
+        <div className="container flex flex-col items-center justify-between md:flex-row px-4 md:px-6">
           <div className="flex items-center gap-2">
             <BookOpen className="h-5 w-5 text-primary" />
             <span className="text-lg font-semibold">PLZ</span>
@@ -135,13 +135,7 @@ export default function LandingPage() {
             <Link href="/about" className="text-sm font-medium hover:underline underline-offset-4">
               About
             </Link>
-            <Link href="/contact" className="text-sm font-medium hover:underline underline-offset-4">
-              Contact
-            </Link>
           </nav>
-          <div className="flex items-center gap-4">
-            <p className="text-sm text-muted-foreground">© {new Date().getFullYear()} PLZ. All rights reserved.</p>
-          </div>
         </div>
       </footer>
     </div>
