@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Page() {
@@ -273,10 +274,13 @@ export default function Page() {
                 running.current = true;
                 setGameStatus('running');
               }}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold"
+              className="px-6 py-2 mb-4 bg-blue-600 text-white rounded-lg font-semibold"
             >
               시작하기
             </button>
+            <Link href="/">
+              <p className="text-sm text-gray-500 underline">홈으로 →</p>
+            </Link>
           </div>
         </div>
       )}
@@ -339,7 +343,7 @@ export default function Page() {
         <div className="w-full max-w-5xl mx-auto">
           <header className="mb-16 text-center">
             <h1 className="text-3xl font-extrabold text-gray-800">머라구여? 정민이를 줄이고 싶다구여??</h1>
-            <p className="text-sm text-gray-600 mt-2">클릭을 통해 정민이를 70kg까지 줄여주세요!!</p>
+            <p className="text-sm text-gray-600 mt-2">숨은 게임 - 클릭을 통해 정민이를 70kg까지 줄여주세요!!</p>
           </header>
 
           <main className="bg-white/80 rounded-2xl p-6 shadow-lg">
