@@ -133,7 +133,7 @@ export default function StudentIdeasPage() {
               </DropdownMenuContent>
             </DropdownMenu>
             <Button>
-              <span>새 프로젝트</span>
+              <span>+ 추가하기</span>
             </Button>
           </div>
         </header>
