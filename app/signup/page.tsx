@@ -1,53 +1,99 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { useState } from 'react';
-import { BookOpen, Eye, EyeOff } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import Link from "next/link";
+import { useState } from "react";
+import { BookOpen, Eye, EyeOff, GraduationCap, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function SignupPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4 py-12">
-      <Card className="w-full max-w-md">
-        <Link className="absolute mt-2 ml-2" href="/">
-          <Button className="bg-transparent text-slate-400 hover:bg-slate-100 rounded-full">&lt;</Button>
-        </Link>
-        <CardHeader className="space-y-2 text-center">
-          <div className="flex justify-center mb-2">
-            <div className="flex items-center gap-2">
-              <BookOpen className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">PLZ</span>
+    <div className="min-h-screen bg-gradient-to-br via-indigo-50 to-purple-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-lg">
+        <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
+          <CardHeader className="text-center pb-8">
+            <div className="flex justify-center mb-4">
+              <Button
+                className="bg-transparent text-slate-400 hover:bg-slate-100 rounded-full absolute top-6 left-6"
+                onClick={() => window.history.back()}
+              >
+                &lt;
+              </Button>
+              <img
+                src="/SsalmukdanLogo.png"
+                alt="PLZ Logo"
+                className="h-16 w-16"
+              />
             </div>
-          </div>
-          <CardTitle className="text-2xl">회원가입</CardTitle>
-          <CardDescription>시작하려면 정보를 입력하세요</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex justify-between px-[5%]">
-            <Link
-              href="/signup/teacher"
-              className="w-[40%] bg-slate-700 aspect-square rounded-xl shadow-lg text-white flex justify-center items-center"
-            >
-              <p>선생님으로 회원가입</p>
-            </Link>
-            <Link
-              href="/signup/student"
-              className="w-[40%] bg-slate-700 aspect-square rounded-xl shadow-lg text-white flex justify-center items-center"
-            >
-              <p>학생으로 회원가입</p>
-            </Link>
-          </div>
-          <div className="text-center text-sm">
-            이미 계정이 있으신가요?{' '}
-            <Link href="/login" className="font-medium text-primary hover:underline">
-              로그인
-            </Link>
-          </div>
-        </CardContent>
-      </Card>
+            <CardTitle className="text-3xl font-bold text-gray-800">
+              회원가입
+            </CardTitle>
+            <CardDescription className="text-lg text-gray-600 mt-2">
+              시작하려면 역할을 선택하세요
+            </CardDescription>
+          </CardHeader>
+
+          <CardContent className="space-y-8 px-8 pb-8">
+            <div className="grid grid-cols-1 gap-4">
+              <Link
+                href="/signup/teacher"
+                className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-r from-emerald-500 to-teal-600 text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                    <GraduationCap className="h-8 w-8" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-xl font-semibold">선생님으로 가입</h3>
+                    <p className="text-emerald-100 text-sm mt-1">
+                      강의를 개설하고 학생들을 가르치세요
+                    </p>
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-white/10 translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
+              </Link>
+
+              <Link
+                href="/signup/student"
+                className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                    <Users className="h-8 w-8" />
+                  </div>
+                  <div className="text-left">
+                    <h3 className="text-xl font-semibold">학생으로 가입</h3>
+                    <p className="text-blue-100 text-sm mt-1">
+                      다양한 수강하고 학습하세요
+                    </p>
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-white/10 translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
+              </Link>
+            </div>
+
+            <div className="text-center pt-4 border-t border-gray-200">
+              <p className="text-gray-600">
+                이미 계정이 있으신가요?{" "}
+                <Link
+                  href="/login"
+                  className="font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  로그인하기
+                </Link>
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
