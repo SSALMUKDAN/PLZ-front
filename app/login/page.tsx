@@ -52,13 +52,16 @@ export default function LoginPage() {
           </Button>
         </Link>
         <CardHeader className="space-y-2 text-center">
-          <div className="flex justify-center mb-2">
-            <div className="flex items-center gap-2">
-              <BookOpen className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">PLZ</span>
-            </div>
+          <div className="flex justify-center mb-4">
+            <img
+              src="/SsalmukdanLogo.png"
+              alt="PLZ Logo"
+              className="h-16 w-16"
+            />
           </div>
-          <CardTitle className="text-2xl">로그인</CardTitle>
+          <CardTitle className="text-3xl font-bold text-gray-800">
+            로그인
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <form className="space-y-6" onSubmit={handleSubmit}>

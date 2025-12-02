@@ -33,13 +33,16 @@ export default function ForgotPasswordPage() {
     <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4 py-12">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-2 text-center">
-          <div className="flex justify-center mb-2">
-            <div className="flex items-center gap-2">
-              <BookOpen className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">PLZ</span>
-            </div>
+          <div className="flex justify-center mb-4">
+            <img
+              src="/SsalmukdanLogo.png"
+              alt="PLZ Logo"
+              className="h-16 w-16"
+            />
           </div>
-          <CardTitle className="text-2xl">비밀번호 찾기</CardTitle>
+          <CardTitle className="text-3xl font-bold text-gray-800">
+            비밀번호 찾기
+          </CardTitle>
           <CardDescription>
             이메일 주소를 입력하면 비밀번호 재설정 링크를 보내드립니다.
           </CardDescription>
