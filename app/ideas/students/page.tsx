@@ -167,22 +167,24 @@ const studentProjects = [
 
 // Status badge component
 function StatusBadge({ status }: { status: string }) {
-  let variant: "outline" | "default" | "secondary" | "destructive" = "outline";
+  // 상태별로 배지에 적용할 추가 클래스
+  const base = "whitespace-nowrap px-2 py-1 rounded-full text-sm font-medium";
+  let statusClasses = "bg-slate-100 text-slate-700 border border-slate-200";
 
   switch (status) {
     case "모집중":
-      variant = "default";
+      statusClasses = "bg-emerald-100 text-emerald-800 border-emerald-200";
       break;
     case "진행중":
-      variant = "secondary";
+      statusClasses = "bg-blue-100 text-blue-800 border-blue-200";
       break;
     case "완료":
-      variant = "outline";
+      statusClasses = "bg-slate-100 text-slate-600 border-slate-200";
       break;
   }
 
   return (
-    <Badge variant={variant} className="whitespace-nowrap">
+    <Badge variant="outline" className={`${base} ${statusClasses}`}>
       {status}
     </Badge>
   );
@@ -260,7 +262,13 @@ export default function StudentIdeasPage() {
                 {projects.map((project) => (
                   <Card
                     key={project.id}
-                    className="flex flex-col w-[27rem] flex-shrink-0"
+                    className={`flex flex-col w-[27rem] flex-shrink-0 ${
+                      project.status === "모집중"
+                        ? "border-t-4 border-emerald-400"
+                        : project.status === "진행중"
+                        ? "border-t-4 border-blue-500"
+                        : "border-t-4 border-slate-400"
+                    }`}
                   >
                     <CardHeader className="pb-3">
                       <div className="flex justify-between items-start">
