@@ -48,11 +48,11 @@ export default function LandingPage() {
               </div>
               <Link href="/smallJM">
                 <Image
-                  src="/SsalmukdanLogo.png?height=550&width=550"
-                  width={550}
-                  height={550}
+                  src="/SsalmukdanLogo.png?height=450&width=450"
+                  width={450}
+                  height={450}
                   alt="Collaboration illustration"
-                  className="mx-auto aspect-square overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
+                  className="ml-24 mx-auto aspect-square overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
                 />
               </Link>
             </div>
