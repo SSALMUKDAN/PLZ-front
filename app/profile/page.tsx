@@ -49,6 +49,16 @@ export default function ProfilePage() {
     router.push("/ideas/new");
   };
 
+  const handleLogout = () => {
+    if (!confirm("정말로 로그아웃하시겠습니까?")) return;
+    try {
+      localStorage.removeItem("token");
+    } catch {
+      // 무시
+    }
+    window.location.href = "/";
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       <Navbar />
@@ -61,12 +71,21 @@ export default function ProfilePage() {
                 <h1 className="text-2xl font-semibold mb-2">{userInfo.name}</h1>
                 <p className="text-gray-600">{userInfo.email}</p>
               </div>
-              <button
-                onClick={handleProposeProject}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium"
-              >
-                새 프로젝트 제안
-              </button>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleProposeProject}
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium"
+                >
+                  새 프로젝트 제안
+                </button>
+                {/* 새로 추가된 로그아웃 버튼 */}
+                <button
+                  onClick={handleLogout}
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm font-medium border"
+                >
+                  로그아웃
+                </button>
+              </div>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-lg p-6">
