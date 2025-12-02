@@ -36,7 +36,7 @@ export default function SignupPage() {
             <CardTitle className="text-3xl font-bold text-gray-800">
               회원가입
             </CardTitle>
-            <CardDescription className="text-lg text-gray-600 mt-2">
+            <CardDescription className="text-md text-gray-600 mt-2">
               역할을 선택하세요
             </CardDescription>
           </CardHeader>
