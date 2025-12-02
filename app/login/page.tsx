@@ -110,14 +110,16 @@ export default function LoginPage() {
             <Button type="submit" className="w-full">
               로그인
             </Button>
-            <div className="text-center text-sm">
-              PLZ가 처음이라면?{" "}
-              <Link
-                href="/signup"
-                className="font-medium text-primary hover:underline"
-              >
-                회원가입
-              </Link>
+            <div className="text-center pt-4 border-t border-gray-200 text-sm">
+              <p className="text-gray-800">
+                PLZ가 처음이라면?{" "}
+                <Link
+                  href="/signup"
+                  className="font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  회원가입
+                </Link>
+              </p>
             </div>
           </form>
         </CardContent>

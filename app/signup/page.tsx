@@ -17,7 +17,7 @@ import {
 export default function SignupPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br via-indigo-50 to-purple-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-lg">
+      <div className="w-full max-w-md">
         <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
           <CardHeader className="text-center pb-8">
             <div className="flex justify-center mb-4">
@@ -52,7 +52,7 @@ export default function SignupPage() {
                     <GraduationCap className="h-8 w-8" />
                   </div>
                   <div className="text-left">
-                    <h3 className="text-xl font-semibold">선생님으로 가입</h3>
+                    <h3 className="text-md font-semibold">선생님으로 가입</h3>
                     <p className="text-gray-600 text-sm mt-1">
                       필요한 프로젝트를 학생들에게 제안해보세요
                     </p>
@@ -70,7 +70,7 @@ export default function SignupPage() {
                     <Users className="h-8 w-8" />
                   </div>
                   <div className="text-left">
-                    <h3 className="text-xl font-semibold">학생으로 가입</h3>
+                    <h3 className="text-md font-semibold">학생으로 가입</h3>
                     <p className="text-gray-300 text-sm mt-1">
                       다양한 프로젝트에 참여해보세요
                     </p>
@@ -79,15 +79,14 @@ export default function SignupPage() {
                 <div className="absolute inset-0 bg-white/10 translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
               </Link>
             </div>
-
-            <div className="text-center pt-4 border-t border-gray-200">
-              <p className="text-gray-600">
+            <div className="text-center pt-4 border-t border-gray-200 text-sm">
+              <p className="text-gray-800">
                 이미 계정이 있으신가요?{" "}
                 <Link
                   href="/login"
                   className="font-semibold text-blue-600 hover:text-blue-700 transition-colors"
                 >
-                  로그인하기
+                  로그인
                 </Link>
               </p>
             </div>
