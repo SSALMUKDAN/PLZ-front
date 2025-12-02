@@ -37,7 +37,7 @@ export default function SignupPage() {
               회원가입
             </CardTitle>
             <CardDescription className="text-lg text-gray-600 mt-2">
-              시작하려면 역할을 선택하세요
+              역할을 선택하세요
             </CardDescription>
           </CardHeader>
 
@@ -54,7 +54,7 @@ export default function SignupPage() {
                   <div className="text-left">
                     <h3 className="text-xl font-semibold">선생님으로 가입</h3>
                     <p className="text-emerald-100 text-sm mt-1">
-                      강의를 개설하고 학생들을 가르치세요
+                      필요한 프로젝트를 학생들에게 제안해보세요
                     </p>
                   </div>
                 </div>
@@ -72,7 +72,7 @@ export default function SignupPage() {
                   <div className="text-left">
                     <h3 className="text-xl font-semibold">학생으로 가입</h3>
                     <p className="text-blue-100 text-sm mt-1">
-                      다양한 수강하고 학습하세요
+                      다양한 로젝트에 참여해보세요
                     </p>
                   </div>
                 </div>
