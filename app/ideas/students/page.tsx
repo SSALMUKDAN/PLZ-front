@@ -116,7 +116,7 @@ export default function StudentIdeasPage() {
 
   // Filter ideas based on selected filter
   const filteredProjects = [...studentProjects].sort((a, b) => {
-    if (filter === "토론 많은 순") {
+    if (filter === "인기순") {
       return b.comments - a.comments;
     }
     // Default to Newest (by ID in this mock data)
@@ -149,8 +149,8 @@ export default function StudentIdeasPage() {
                 <DropdownMenuItem onClick={() => setFilter("최신순")}>
                   최신순
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setFilter("토론 많은 순")}>
-                  토론 많은 순
+                <DropdownMenuItem onClick={() => setFilter("인기순")}>
+                  인기순
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
