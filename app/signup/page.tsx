@@ -45,25 +45,25 @@ export default function SignupPage() {
             <div className="grid grid-cols-1 gap-4">
               <Link
                 href="/signup/teacher"
-                className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-r from-emerald-500 to-teal-600 text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+                className="group relative overflow-hidden rounded-2xl p-6 bg-white border-2 border-gray-200 text-black transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
               >
                 <div className="flex items-center gap-4">
-                  <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                  <div className="p-3 bg-black/10 rounded-xl backdrop-blur-sm">
                     <GraduationCap className="h-8 w-8" />
                   </div>
                   <div className="text-left">
                     <h3 className="text-xl font-semibold">선생님으로 가입</h3>
-                    <p className="text-emerald-100 text-sm mt-1">
+                    <p className="text-gray-600 text-sm mt-1">
                       필요한 프로젝트를 학생들에게 제안해보세요
                     </p>
                   </div>
                 </div>
-                <div className="absolute inset-0 bg-white/10 translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
+                <div className="absolute inset-0 bg-black/5 translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
               </Link>
 
               <Link
                 href="/signup/student"
-                className="group relative overflow-hidden rounded-2xl p-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+                className="group relative overflow-hidden rounded-2xl p-6 bg-black text-white transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
               >
                 <div className="flex items-center gap-4">
                   <div className="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
@@ -71,8 +71,8 @@ export default function SignupPage() {
                   </div>
                   <div className="text-left">
                     <h3 className="text-xl font-semibold">학생으로 가입</h3>
-                    <p className="text-blue-100 text-sm mt-1">
-                      다양한 로젝트에 참여해보세요
+                    <p className="text-gray-300 text-sm mt-1">
+                      다양한 프로젝트에 참여해보세요
                     </p>
                   </div>
                 </div>
