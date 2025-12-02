@@ -66,14 +66,16 @@ export default function SignupPage() {
           </Button>
         </div>
         <CardHeader className="space-y-2 text-center">
-          <div className="flex justify-center mb-2">
-            <div className="flex items-center gap-2">
-              <BookOpen className="h-8 w-8 text-primary" />
-              <span className="text-2xl font-bold">PLZ</span>
-            </div>
+          <div className="flex justify-center mb-4">
+            <img
+              src="/SsalmukdanLogo.png"
+              alt="PLZ Logo"
+              className="h-16 w-16"
+            />
           </div>
-          <CardTitle className="text-2xl">선생님 회원가입</CardTitle>
-          <CardDescription>시작하려면 정보를 입력하세요</CardDescription>
+          <CardTitle className="text-3xl font-bold text-gray-800">
+            선생님으로 회원가입
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={handleSubmit}>
