@@ -1,26 +1,33 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import Link from "next/link"
-import { useState } from "react"
-import { BookOpen, ArrowLeft, CheckCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { Alert, AlertDescription } from "@/components/ui/alert"
+import Link from "next/link";
+import { useState } from "react";
+import { BookOpen, ArrowLeft, CheckCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("")
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [email, setEmail] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     // Here you would typically call an API to send the reset link
     // For now, we'll just show the confirmation message
-    setIsSubmitted(true)
-  }
+    setIsSubmitted(true);
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4 py-12">
@@ -32,21 +39,24 @@ export default function ForgotPasswordPage() {
               <span className="text-2xl font-bold">PLZ</span>
             </div>
           </div>
-          <CardTitle className="text-2xl">Reset your password</CardTitle>
-          <CardDescription>Enter your email address and we'll send you a link to reset your password</CardDescription>
+          <CardTitle className="text-2xl">비밀번호 찾기</CardTitle>
+          <CardDescription>
+            이메일 주소를 입력하면 비밀번호 재설정 링크를 보내드립니다.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           {isSubmitted ? (
             <Alert className="bg-primary/10 border-primary/20">
               <CheckCircle className="h-4 w-4 text-primary" />
               <AlertDescription className="text-center py-2">
-                If an account exists for {email}, you will receive a password reset link in your email shortly.
+                {email} 계정이 존재한다면, 곧 이메일로 비밀번호 재설정 링크를
+                받으실 수 있습니다.
               </AlertDescription>
             </Alert>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">이메일</Label>
                 <Input
                   id="email"
                   type="email"
@@ -58,19 +68,21 @@ export default function ForgotPasswordPage() {
               </div>
 
               <Button type="submit" className="w-full">
-                Send Reset Link
+                재설정 링크 전송
               </Button>
             </form>
           )}
         </CardContent>
         <CardFooter className="flex justify-center">
-          <Link href="/login" className="flex items-center text-sm text-muted-foreground hover:text-primary">
+          <Link
+            href="/login"
+            className="flex items-center text-sm text-muted-foreground hover:text-primary"
+          >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to login
+            로그인으로 돌아가기
           </Link>
         </CardFooter>
       </Card>
     </div>
-  )
+  );
 }
-
