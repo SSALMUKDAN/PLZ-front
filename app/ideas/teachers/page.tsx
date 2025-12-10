@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 
 // 샘플 데이터: 상태 문자열을 학생 파일과 동일한 한국어로 변경
 const teacherIdeas = [
@@ -267,6 +268,7 @@ export default function IdeasPage() {
           );
         })}
       </div>
+      <Footer />
     </div>
   );
 }

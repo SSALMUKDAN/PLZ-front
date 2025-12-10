@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 
 export default function NewIdeaPage() {
   const router = useRouter();
@@ -225,6 +226,7 @@ export default function NewIdeaPage() {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 
 // 변경: 학생 프로젝트 목업을 한국어로 번역하고 항목 추가
 const studentProjects = [
@@ -270,6 +271,7 @@ export default function StudentIdeasPage() {
           );
         })}
       </div>
+      <Footer />
     </div>
   );
 }

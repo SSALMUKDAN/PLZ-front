@@ -21,6 +21,7 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 
 // Sample idea data
 const ideaData = {
@@ -348,6 +349,7 @@ export default function IdeaDetailPage() {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     </SidebarProvider>
   );
