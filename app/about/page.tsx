@@ -58,7 +58,7 @@ export default function AboutPage() {
       <main className="flex-1 container px-4 md:px-6 py-12">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold tracking-tight mb-4">About SSALMUKDAN</h1>
+            <h1 className="text-4xl font-bold tracking-tight mb-4">쌀먹단</h1>
             <p className="text-lg text-muted-foreground">PLZ 프로젝트에 기여한 개발자들을 소개합니다.</p>
           </div>
 
