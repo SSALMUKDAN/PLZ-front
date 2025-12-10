@@ -72,21 +72,13 @@ export default function ProfilePage() {
                 <h1 className="text-2xl font-semibold mb-2">{userInfo.name}</h1>
                 <p className="text-gray-600">{userInfo.email}</p>
               </div>
-              <div className="flex gap-3">
-                <button
-                  onClick={handleProposeProject}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium"
-                >
-                  새 프로젝트 제안
-                </button>
-                {/* 새로 추가된 로그아웃 버튼 */}
-                <button
-                  onClick={handleLogout}
-                  className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm font-medium border"
-                >
-                  로그아웃
-                </button>
-              </div>
+
+              <button
+                onClick={handleLogout}
+                className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-4 py-2 rounded-md text-sm font-medium border"
+              >
+                로그아웃
+              </button>
             </div>
 
             <div className="bg-white border border-gray-200 rounded-lg p-6">
