@@ -160,19 +160,19 @@ export default function LandingPage() {
               href="/login"
               className="text-sm font-medium text-slate-600 hover:text-[#3D87C7] transition-colors underline-offset-4 hover:underline"
             >
-              Login
+              로그인
             </Link>
             <Link
               href="/signup"
               className="text-sm font-medium text-slate-600 hover:text-[#3D87C7] transition-colors underline-offset-4 hover:underline"
             >
-              Sign Up
+              회원가입
             </Link>
             <Link
               href="/about"
               className="text-sm font-medium text-slate-600 hover:text-[#3D87C7] transition-colors underline-offset-4 hover:underline"
             >
-              About
+              쌀먹단
             </Link>
           </nav>
         </div>
