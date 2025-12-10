@@ -202,9 +202,11 @@ export default function IdeasPage() {
                 <DropdownMenuItem onClick={() => setFilter('인기순')}>인기순</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Button>
-              <span>+ 추가하기</span>
-            </Button>
+            <Link href="/idea/new">
+              <Button>
+                <span>+ 추가하기</span>
+              </Button>
+            </Link>
           </div>
         </header>
 
