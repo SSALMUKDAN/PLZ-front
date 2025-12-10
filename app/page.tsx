@@ -1,15 +1,9 @@
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import {
-  BookOpen,
-  MessageSquare,
-  ChevronRight,
-  Lightbulb,
-  GraduationCap,
-  ArrowRight,
-} from "lucide-react";
-import Navbar from "@/components/navbar";
+import Link from 'next/link';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { BookOpen, MessageSquare, ChevronRight, Lightbulb, GraduationCap, ArrowRight } from 'lucide-react';
+import Navbar from '@/components/navbar';
+import Footer from '@/components/footer';
 
 export default function LandingPage() {
   return (
@@ -25,11 +19,7 @@ export default function LandingPage() {
               <div className="flex flex-col justify-center space-y-4 gap-8">
                 <div className="space-y-2">
                   <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    <img
-                      src="/PLZLogo.svg"
-                      alt="PLZ Logo"
-                      className="w-[6rem] pb-3"
-                    />
+                    <img src="/PLZLogo.svg" alt="PLZ Logo" className="w-[6rem] pb-3" />
                     프로젝트 아이디어 공유 플랫폼
                   </h1>
                 </div>
@@ -60,22 +50,16 @@ export default function LandingPage() {
         </section>
 
         {/* Features Section */}
-        <section
-          id="features"
-          className="w-full py-16 md:py-32 lg:py-40 bg-white"
-        >
+        <section id="features" className="w-full py-16 md:py-32 lg:py-40 bg-white">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-6 text-center mb-16">
               <div className="space-y-3">
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-slate-900">
-                  PLZ ?
-                </h2>
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-slate-900">PLZ ?</h2>
                 <div className="h-1 w-16 bg-gradient-to-r from-[#3D87C7] to-blue-400 mx-auto rounded-full"></div>
                 <p className="max-w-[900px] text-lg text-slate-600 md:text-xl/relaxed leading-relaxed">
                   선생님들이 학교에 필요한 서비스 아이디어를 제안하고,
                   <br />
-                  학생들이 그 아이디어를 실제로 구현하는 프로젝트를 진행할 수
-                  있도록 돕는 플랫폼입니다.
+                  학생들이 그 아이디어를 실제로 구현하는 프로젝트를 진행할 수 있도록 돕는 플랫폼입니다.
                 </p>
               </div>
             </div>
@@ -84,36 +68,29 @@ export default function LandingPage() {
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#3D87C7]/20 to-blue-100 group-hover:from-[#3D87C7]/30 group-hover:to-blue-200 transition-all">
                   <Lightbulb className="h-7 w-7 text-[#3D87C7]" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900">
-                  선생님 아이디어
-                </h3>
+                <h3 className="text-xl font-bold text-slate-900">선생님 아이디어</h3>
                 <p className="text-center text-slate-600 leading-relaxed">
-                  선생님이 학교에서 필요하다고 생각하는 서비스 아이디어를
-                  제안하고, 학생들은 그 아이디어를 실제로 구현합니다.
+                  선생님이 학교에서 필요하다고 생각하는 서비스 아이디어를 제안하고, 학생들은 그 아이디어를 실제로
+                  구현합니다.
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-4 rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-8 shadow-md hover:shadow-xl hover:border-[#3D87C7] transition-all duration-300 group">
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#3D87C7]/20 to-blue-100 group-hover:from-[#3D87C7]/30 group-hover:to-blue-200 transition-all">
                   <GraduationCap className="h-7 w-7 text-[#3D87C7]" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900">
-                  학생 아이디어
-                </h3>
+                <h3 className="text-xl font-bold text-slate-900">학생 아이디어</h3>
                 <p className="text-center text-slate-600 leading-relaxed">
-                  학생들이 학교에서 만들고 싶은 서비스를 제안하고, 선생님들이
-                  실제 학교 시스템에서 활용할 수 있도록 지원합니다.
+                  학생들이 학교에서 만들고 싶은 서비스를 제안하고, 선생님들이 실제 학교 시스템에서 활용할 수 있도록
+                  지원합니다.
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-4 rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50 p-8 shadow-md hover:shadow-xl hover:border-[#3D87C7] transition-all duration-300 group">
                 <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#3D87C7]/20 to-blue-100 group-hover:from-[#3D87C7]/30 group-hover:to-blue-200 transition-all">
                   <MessageSquare className="h-7 w-7 text-[#3D87C7]" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900">
-                  지속적인 소통
-                </h3>
+                <h3 className="text-xl font-bold text-slate-900">지속적인 소통</h3>
                 <p className="text-center text-slate-600 leading-relaxed">
-                  아이디어 내에서 지속적인 소통을 통해 서비스 개발과 유지보수,
-                  아이디어의 확장을 돕습니다.
+                  아이디어 내에서 지속적인 소통을 통해 서비스 개발과 유지보수, 아이디어의 확장을 돕습니다.
                 </p>
               </div>
             </div>
@@ -125,12 +102,9 @@ export default function LandingPage() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-6 text-center">
               <div className="space-y-4">
-                <h2 className="text-3xl md:text-5xl font-bold tracking-tighter ">
-                  아이디어를 실현할 준비가 되셨나요?
-                </h2>
+                <h2 className="text-3xl md:text-5xl font-bold tracking-tighter ">아이디어를 실현할 준비가 되셨나요?</h2>
                 <p className="max-w-[900px] text-lg md:text-xl/relaxed leading-relaxed">
-                  지금 PLZ에 참여하여 선생님과 학생들과 연결하고 아이디어를
-                  현실로 만들어보세요.
+                  지금 PLZ에 참여하여 선생님과 학생들과 연결하고 아이디어를 현실로 만들어보세요.
                 </p>
               </div>
               <Link href="/signup">
@@ -147,36 +121,7 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer
-        id="contact"
-        className="w-full border-t border-slate-200 bg-gradient-to-b from-white to-slate-50 py-6"
-      >
-        <div className="container flex flex-col items-center justify-between gap-8 md:flex-row px-4 md:px-6">
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-bold text-slate-900">PLZ</span>
-          </div>
-          <nav className="flex gap-6 sm:gap-8">
-            <Link
-              href="/login"
-              className="text-sm font-medium text-slate-600 hover:text-[#3D87C7] transition-colors underline-offset-4 hover:underline"
-            >
-              로그인
-            </Link>
-            <Link
-              href="/signup"
-              className="text-sm font-medium text-slate-600 hover:text-[#3D87C7] transition-colors underline-offset-4 hover:underline"
-            >
-              회원가입
-            </Link>
-            <Link
-              href="/about"
-              className="text-sm font-medium text-slate-600 hover:text-[#3D87C7] transition-colors underline-offset-4 hover:underline"
-            >
-              쌀먹단
-            </Link>
-          </nav>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
