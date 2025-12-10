@@ -10,12 +10,11 @@ export default function ProfilePage() {
 
   // 임시 데이터 - 실제로는 API에서 가져와야 함
   const userInfo = {
-    name: '김철수',
-    email: 'kimcs@example.com',
+    name: '정효주',
+    email: 's24015@gsm.hs.kr',
     role: '학생',
-    university: '서울대학교',
-    major: '컴퓨터공학과',
-    skills: ['React', 'Node.js', 'Python', 'Java'],
+    major: '프론트엔드 개발자',
+    skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
     bio: '새로운 기술을 배우고 실제 프로젝트에 적용하는 것을 좋아합니다.',
   };
 
@@ -86,10 +85,6 @@ export default function ProfilePage() {
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 mb-1">역할</h3>
                   <p>{userInfo.role}</p>
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500 mb-1">학교</h3>
-                  <p>{userInfo.university}</p>
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 mb-1">전공</h3>
