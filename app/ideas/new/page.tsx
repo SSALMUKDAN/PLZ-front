@@ -2,7 +2,7 @@
 
 import type React from 'react';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { X, Check, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,14 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 
@@ -29,6 +37,25 @@ export default function NewIdeaPage() {
   const [currentTag, setCurrentTag] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    // 로그인 상태 확인 로직 (실제 구현 시 API 호출 또는 auth context 사용)
+    const checkLoginStatus = () => {
+      // 예시: localStorage에서 토큰 확인
+      const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        setIsLoggedIn(false);
+        setIsLoginModalOpen(true);
+      } else {
+        setIsLoggedIn(true);
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -112,6 +139,11 @@ export default function NewIdeaPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!isLoggedIn) {
+      setIsLoginModalOpen(true);
+      return;
+    }
+
     if (validateForm()) {
       // Here you would typically submit the form data to your API
       console.log('Form submitted:', { ...formData, tags });
@@ -122,6 +154,17 @@ export default function NewIdeaPage() {
       // In a real app, you might redirect to the new idea page after submission
       // router.push(`/ideas/${newIdeaId}`)
     }
+  };
+
+  const handleLoginRedirect = () => {
+    router.push('/auth/login');
+  };
+
+  const handleModalClose = (open: boolean) => {
+    if (!open && !isLoggedIn) {
+      router.back();
+    }
+    setIsLoginModalOpen(open);
   };
 
   const handleCreateAnother = () => {
@@ -138,6 +181,22 @@ export default function NewIdeaPage() {
   return (
     <div className="flex min-h-screen flex-col ">
       <Navbar />
+      {/* 로그인 모달 */}
+      <Dialog open={isLoginModalOpen} onOpenChange={handleModalClose}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>로그인이 필요합니다</DialogTitle>
+            <DialogDescription>아이디어를 공유하려면 먼저 로그인해주세요.</DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => router.back()}>
+              이전으로
+            </Button>
+            <Button onClick={handleLoginRedirect}>로그인하기</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {/* Main content */}
       <div className="flex-1 p-6 pt-24">
         <div className="mx-auto max-w-2xl">
@@ -199,6 +258,7 @@ export default function NewIdeaPage() {
                   placeholder="제목을 입력하세요"
                   value={formData.title}
                   onChange={handleInputChange}
+                  disabled={!isLoggedIn}
                 />
                 {errors.title && <p className="text-sm text-destructive">{errors.title}</p>}
               </div>
@@ -214,11 +274,12 @@ export default function NewIdeaPage() {
                   className="min-h-[150px]"
                   value={formData.description}
                   onChange={handleInputChange}
+                  disabled={!isLoggedIn}
                 />
                 {errors.description && <p className="text-sm text-destructive">{errors.description}</p>}
               </div>
               <div className="pt-4">
-                <Button type="submit" className="w-full">
+                <Button type="submit" className="w-full" disabled={!isLoggedIn}>
                   아이디어 제출
                 </Button>
               </div>
