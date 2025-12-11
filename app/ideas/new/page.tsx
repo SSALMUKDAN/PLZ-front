@@ -157,7 +157,7 @@ export default function NewIdeaPage() {
   };
 
   const handleLoginRedirect = () => {
-    router.push('/auth/login');
+    router.push('/login');
   };
 
   const handleModalClose = (open: boolean) => {
