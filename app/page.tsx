@@ -59,7 +59,7 @@ export default function LandingPage() {
                 <p className="max-w-[900px] text-lg text-slate-600 md:text-xl/relaxed leading-relaxed">
                   선생님들이 학교에 필요한 서비스 아이디어를 제안하고,
                   <br />
-                  학생들이 그 아이디어를 실제로 구현하는 프로젝트를 진행할 수 있도록 돕는 플랫폼입니다.
+                  학생들이 그 아이디어를 실제로 구현할 수 있도록 돕는 서비스입니다.
                 </p>
               </div>
             </div>
