@@ -69,8 +69,7 @@ const ideaData = {
             role: '학생',
             avatar: '/SsalmukdanLogo.png?height=40&width=40',
           },
-          content:
-            '지훈님, 저도 태양 에너지에 관심이 있어요. 태양광 기술의 다양한 측면에서 협력할 수 있을까요?',
+          content: '지훈님, 저도 태양 에너지에 관심이 있어요. 태양광 기술의 다양한 측면에서 협력할 수 있을까요?',
           timestamp: '12시간 전',
           likes: 1,
         },
@@ -83,8 +82,7 @@ const ideaData = {
         role: '학생',
         avatar: '/SsalmukdanLogo.png?height=40&width=40',
       },
-      content:
-        '수력 발전 모델을 작업하고 싶어요. 규모와 사용해야 할 재료에 대해 몇 가지 질문이 있습니다.',
+      content: '수력 발전 모델을 작업하고 싶어요. 규모와 사용해야 할 재료에 대해 몇 가지 질문이 있습니다.',
       timestamp: '2일 전',
       likes: 3,
       replies: [],
