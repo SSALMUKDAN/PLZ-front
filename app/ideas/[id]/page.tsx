@@ -26,52 +26,52 @@ import Footer from '@/components/footer';
 // Sample idea data
 const ideaData = {
   id: '1',
-  title: 'Renewable Energy Science Fair Project',
+  title: '재생 에너지 과학 박람회 프로젝트',
   description:
-    'Looking for students interested in building small-scale renewable energy demonstrations for the upcoming science fair. This project will focus on creating working models of solar, wind, and hydroelectric power generation. Students will learn about energy conversion, efficiency, and the environmental impact of different energy sources. The final projects will be showcased at the district science fair in May, with potential for state-level competition for exceptional projects.',
-  tags: ['Science', 'Environment', 'Engineering'],
+    '다가오는 과학 박람회를 위해 소규모 재생 에너지 시연 제작에 관심 있는 학생들을 찾고 있습니다. 이 프로젝트는 태양광, 풍력, 수력 발전의 작동 모델 제작에 중점을 둡니다. 학생들은 에너지 변환, 효율성 및 다양한 에너지원의 환경적 영향에 대해 배우게 됩니다. 최종 프로젝트는 5월 지역 과학 박람회에서 전시되며, 우수 프로젝트는 전국 대회 진출 가능성이 있습니다.',
+  tags: ['과학', '환경', '공학'],
   status: 'Open',
   author: {
-    name: 'Dr. Sarah Johnson',
-    role: 'Science Teacher',
+    name: '김서연 교수',
+    role: '과학 교사',
     avatar: '/SsalmukdanLogo.png?height=40&width=40',
   },
-  postedDate: '2 days ago',
+  postedDate: '2일 전',
   comments: [
     {
       id: 'c1',
       author: {
-        name: 'Miguel Rodriguez',
-        role: 'Student',
+        name: '박지훈',
+        role: '학생',
         avatar: '/SsalmukdanLogo.png?height=40&width=40',
       },
       content:
-        "I'm very interested in this project! I've been researching solar panel efficiency and would love to build a demonstration model.",
-      timestamp: '1 day ago',
+        '이 프로젝트에 정말 관심이 많습니다! 태양광 패널 효율성에 대해 연구해왔고 시연 모델을 만들어보고 싶어요.',
+      timestamp: '1일 전',
       likes: 5,
       replies: [
         {
           id: 'r1',
           author: {
-            name: 'Dr. Sarah Johnson',
-            role: 'Science Teacher',
+            name: '김서연 교수',
+            role: '과학 교사',
             avatar: '/SsalmukdanLogo.png?height=40&width=40',
           },
           content:
-            "That sounds great, Miguel! I have some resources on solar panel efficiency that I can share with you. Let's set up a time to discuss your ideas in more detail.",
-          timestamp: '1 day ago',
+            '좋네요, 지훈님! 태양광 패널 효율성에 관한 자료를 공유해드릴 수 있어요. 아이디어를 더 자세히 논의할 시간을 정해봅시다.',
+          timestamp: '1일 전',
           likes: 2,
         },
         {
           id: 'r2',
           author: {
-            name: 'Aisha Patel',
-            role: 'Student',
+            name: '이수민',
+            role: '학생',
             avatar: '/SsalmukdanLogo.png?height=40&width=40',
           },
           content:
-            "Miguel, I'm also interested in solar energy. Maybe we could collaborate on different aspects of solar technology?",
-          timestamp: '12 hours ago',
+            '지훈님, 저도 태양 에너지에 관심이 있어요. 태양광 기술의 다양한 측면에서 협력할 수 있을까요?',
+          timestamp: '12시간 전',
           likes: 1,
         },
       ],
@@ -79,13 +79,13 @@ const ideaData = {
     {
       id: 'c2',
       author: {
-        name: 'Emma Wilson',
-        role: 'Student',
+        name: '최예은',
+        role: '학생',
         avatar: '/SsalmukdanLogo.png?height=40&width=40',
       },
       content:
-        "I'd like to work on the hydroelectric power model. I have some questions about the scale and materials we should use.",
-      timestamp: '2 days ago',
+        '수력 발전 모델을 작업하고 싶어요. 규모와 사용해야 할 재료에 대해 몇 가지 질문이 있습니다.',
+      timestamp: '2일 전',
       likes: 3,
       replies: [],
     },
@@ -96,30 +96,30 @@ const ideaData = {
 const relatedIdeas = [
   {
     id: '2',
-    title: 'Biodiversity Mapping Project',
-    description: 'Looking for students to help create a digital map of local biodiversity.',
-    tags: ['Biology', 'Environment', 'Technology'],
+    title: '생물다양성 지도 제작 프로젝트',
+    description: '지역 생물다양성의 디지털 지도 제작을 도와줄 학생들을 찾고 있습니다.',
+    tags: ['생물학', '환경', '기술'],
     status: 'Open',
-    author: 'Prof. James Wilson',
-    postedDate: '3 days ago',
+    author: '정민호 교수',
+    postedDate: '3일 전',
   },
   {
     id: '3',
-    title: 'Sustainable Architecture Models',
-    description: 'Seeking students interested in designing eco-friendly building models.',
-    tags: ['Architecture', 'Environment', 'Design'],
+    title: '지속가능한 건축 모델',
+    description: '친환경 건물 모델 설계에 관심 있는 학생들을 찾고 있습니다.',
+    tags: ['건축', '환경', '디자인'],
     status: 'Open',
-    author: 'Dr. Lisa Patel',
-    postedDate: '1 week ago',
+    author: '윤지영 교수',
+    postedDate: '1주일 전',
   },
   {
     id: '4',
-    title: 'Climate Change Data Visualization',
-    description: 'Looking for students to create interactive visualizations of climate data.',
-    tags: ['Data Science', 'Environment', 'Visualization'],
+    title: '기후 변화 데이터 시각화',
+    description: '기후 데이터의 인터랙티브 시각화를 제작할 학생들을 찾고 있습니다.',
+    tags: ['데이터 과학', '환경', '시각화'],
     status: 'In Progress',
-    author: 'Prof. Michael Chen',
-    postedDate: '5 days ago',
+    author: '강동현 교수',
+    postedDate: '5일 전',
   },
 ];
 
