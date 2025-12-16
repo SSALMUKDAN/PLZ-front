@@ -110,7 +110,7 @@ export default function LandingPage() {
               <Link href="/signup">
                 <Button
                   size="lg"
-                  className="mt-6 gap-2 bg-white text-black hover:bg-gray-100 font-semibold shadow-lg hover:shadow-xl transition-all"
+                  className="mt-6 gap-2 bg-white text-black hover:bg-white font-semibold shadow-lg hover:shadow-xl transition-all"
                 >
                   지금 시작하기 <ArrowRight className="h-4 w-4" />
                 </Button>
