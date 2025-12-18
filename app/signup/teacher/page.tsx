@@ -30,12 +30,13 @@ export default function SignupPage() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
     if (formData.get("password") !== formData.get("confirmPassword")) {
       alert("비밀번호가 일치하지 않습니다.");
+      return;
     }
     const data = {
       name: formData.get("fullName"),
@@ -44,14 +45,16 @@ export default function SignupPage() {
       password: formData.get("password"),
       role: "TEACHER",
     };
-    axios.post("/api/user/signup", data).then((res) => {
-      if (res.status === 200) {
+
+    try {
+      const res = await axios.post("/api/user/signup", data);
+      if (res.status === 201 || res.status === 200) {
         alert("회원가입이 완료되었습니다.");
         router.push("/login");
-      } else {
-        alert("회원가입에 실패하였습니다.");
       }
-    });
+    } catch (error: any) {
+      alert(error.response?.data?.error || "회원가입에 실패하였습니다.");
+    }
   };
 
   return (

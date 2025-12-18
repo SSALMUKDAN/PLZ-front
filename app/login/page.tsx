@@ -6,13 +6,7 @@ import { BookOpen, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -25,7 +19,7 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
@@ -33,14 +27,17 @@ export default function LoginPage() {
       email: formData.get("email"),
       password: formData.get("password"),
     };
-    axios.post("/api/auth/login", data).then((res) => {
-      if (res.status === 200) {
+
+    try {
+      const res = await axios.post("/api/auth/login", data);
+      if (res.data.token) {
+        localStorage.setItem("authToken", res.data.token);
         alert("로그인이 완료되었습니다.");
         router.push("/");
-      } else {
-        alert("로그인에 실패하였습니다.");
       }
-    });
+    } catch (error: any) {
+      alert(error.response?.data?.error || "로그인에 실패하였습니다.");
+    }
   };
 
   return (
@@ -69,6 +66,7 @@ export default function LoginPage() {
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 placeholder="name@example.com"
                 required
@@ -87,6 +85,7 @@ export default function LoginPage() {
               <div className="relative">
                 <Input
                   id="password"
+                  name="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   required

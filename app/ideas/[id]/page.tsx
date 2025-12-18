@@ -1,15 +1,25 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-import { BookOpen, Home, User, Bell, Users, Clock, ThumbsUp, Reply, Send } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Textarea } from '@/components/ui/textarea';
-import { Separator } from '@/components/ui/separator';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import {
+  BookOpen,
+  Home,
+  User,
+  Bell,
+  Users,
+  Clock,
+  ThumbsUp,
+  Reply,
+  Send,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
   SidebarContent,
@@ -19,125 +29,69 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-} from '@/components/ui/sidebar';
-import Navbar from '@/components/navbar';
-import Footer from '@/components/footer';
+} from "@/components/ui/sidebar";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import api from "@/lib/apiAxios";
 
-// Sample idea data
-const ideaData = {
-  id: '1',
-  title: '재생 에너지 과학 박람회 프로젝트',
-  description:
-    '다가오는 과학 박람회를 위해 소규모 재생 에너지 시연 제작에 관심 있는 학생들을 찾고 있습니다. 이 프로젝트는 태양광, 풍력, 수력 발전의 작동 모델 제작에 중점을 둡니다. 학생들은 에너지 변환, 효율성 및 다양한 에너지원의 환경적 영향에 대해 배우게 됩니다. 최종 프로젝트는 5월 지역 과학 박람회에서 전시되며, 우수 프로젝트는 전국 대회 진출 가능성이 있습니다.',
-  tags: ['과학', '환경', '공학'],
-  status: 'Open',
+interface Comment {
+  id: string;
+  content: string;
   author: {
-    name: '김서연 교수',
-    role: '과학 교사',
-    avatar: '/SsalmukdanLogo.png?height=40&width=40',
-  },
-  postedDate: '2일 전',
-  comments: [
-    {
-      id: 'c1',
-      author: {
-        name: '박지훈',
-        role: '학생',
-        avatar: '/SsalmukdanLogo.png?height=40&width=40',
-      },
-      content:
-        '이 프로젝트에 정말 관심이 많습니다! 태양광 패널 효율성에 대해 연구해왔고 시연 모델을 만들어보고 싶어요.',
-      timestamp: '1일 전',
-      likes: 5,
-      replies: [
-        {
-          id: 'r1',
-          author: {
-            name: '김서연 교수',
-            role: '과학 교사',
-            avatar: '/SsalmukdanLogo.png?height=40&width=40',
-          },
-          content:
-            '좋네요, 지훈님! 태양광 패널 효율성에 관한 자료를 공유해드릴 수 있어요. 아이디어를 더 자세히 논의할 시간을 정해봅시다.',
-          timestamp: '1일 전',
-          likes: 2,
-        },
-        {
-          id: 'r2',
-          author: {
-            name: '이수민',
-            role: '학생',
-            avatar: '/SsalmukdanLogo.png?height=40&width=40',
-          },
-          content: '지훈님, 저도 태양 에너지에 관심이 있어요. 태양광 기술의 다양한 측면에서 협력할 수 있을까요?',
-          timestamp: '12시간 전',
-          likes: 1,
-        },
-      ],
-    },
-    {
-      id: 'c2',
-      author: {
-        name: '최예은',
-        role: '학생',
-        avatar: '/SsalmukdanLogo.png?height=40&width=40',
-      },
-      content: '수력 발전 모델을 작업하고 싶어요. 규모와 사용해야 할 재료에 대해 몇 가지 질문이 있습니다.',
-      timestamp: '2일 전',
-      likes: 3,
-      replies: [],
-    },
-  ],
-};
+    id: string;
+    name: string;
+    role: string;
+  };
+  likes: number;
+  createdAt: string;
+  replies?: Comment[];
+}
 
-// Sample related ideas
-const relatedIdeas = [
-  {
-    id: '2',
-    title: '생물다양성 지도 제작 프로젝트',
-    description: '지역 생물다양성의 디지털 지도 제작을 도와줄 학생들을 찾고 있습니다.',
-    tags: ['생물학', '환경', '기술'],
-    status: 'Open',
-    author: '정민호 교수',
-    postedDate: '3일 전',
-  },
-  {
-    id: '3',
-    title: '지속가능한 건축 모델',
-    description: '친환경 건물 모델 설계에 관심 있는 학생들을 찾고 있습니다.',
-    tags: ['건축', '환경', '디자인'],
-    status: 'Open',
-    author: '윤지영 교수',
-    postedDate: '1주일 전',
-  },
-  {
-    id: '4',
-    title: '기후 변화 데이터 시각화',
-    description: '기후 데이터의 인터랙티브 시각화를 제작할 학생들을 찾고 있습니다.',
-    tags: ['데이터 과학', '환경', '시각화'],
-    status: 'In Progress',
-    author: '강동현 교수',
-    postedDate: '5일 전',
-  },
-];
+interface Idea {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  status: string;
+  author: {
+    id: string;
+    name: string;
+    role: string;
+  };
+  createdAt: string;
+  comments: Comment[];
+}
+
+interface RelatedIdea {
+  id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  status: string;
+  author: string;
+  comments: number;
+}
 
 // Status badge component
 function StatusBadge({ status }: { status: string }) {
-  let variant: 'outline' | 'default' | 'secondary' | 'destructive' = 'outline';
+  let variant: "outline" | "default" | "secondary" | "destructive" = "outline";
   let label = status;
 
   switch (status) {
-    case 'Open':
-      variant = 'default';
-      label = '모집중';
+    case "OPEN":
+    case "Open":
+      variant = "default";
+      label = "모집중";
       break;
-    case 'In Progress':
-      variant = 'secondary';
-      label = '진행 중';
+    case "IN_PROGRESS":
+    case "In Progress":
+      variant = "secondary";
+      label = "진행 중";
       break;
-    case 'Completed':
-      variant = 'outline';
-      label = '완료';
+    case "COMPLETED":
+    case "Completed":
+      variant = "outline";
+      label = "완료";
       break;
   }
 
@@ -149,28 +103,82 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 // Comment component
-function Comment({ comment, isReply = false }: { comment: any; isReply?: boolean }) {
+function CommentComponent({
+  comment,
+  isReply = false,
+  onReply,
+}: {
+  comment: Comment;
+  isReply?: boolean;
+  onReply: (parentId: string, content: string) => Promise<void>;
+}) {
   const [showReplyForm, setShowReplyForm] = useState(false);
-  const [replyText, setReplyText] = useState('');
+  const [replyText, setReplyText] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleReplySubmit = async () => {
+    if (!replyText.trim()) return;
+
+    setSubmitting(true);
+    try {
+      await onReply(comment.id, replyText);
+      setReplyText("");
+      setShowReplyForm(false);
+    } catch (error) {
+      console.error("Failed to submit reply:", error);
+      alert("답글 작성에 실패했습니다.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleLike = async () => {
+    try {
+      await api.post(`/comments/${comment.id}/like`);
+      window.location.reload(); // 간단하게 페이지 새로고침
+    } catch (error) {
+      console.error("Failed to like comment:", error);
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+
+    if (days > 0) return `${days}일 전`;
+    if (hours > 0) return `${hours}시간 전`;
+    return "방금 전";
+  };
 
   return (
-    <div className={`${isReply ? 'ml-12 mt-4' : 'mt-6'}`}>
+    <div className={`${isReply ? "ml-12 mt-4" : "mt-6"}`}>
       <div className="flex gap-4">
         <Avatar className="h-10 w-10">
-          <AvatarImage src={comment.author.avatar} alt={comment.author.name} />
           <AvatarFallback>{comment.author.name.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="flex-1 space-y-1">
           <div className="flex items-center justify-between">
             <div>
               <span className="font-medium">{comment.author.name}</span>
-              <span className="ml-2 text-xs text-muted-foreground">{comment.author.role}</span>
+              <span className="ml-2 text-xs text-muted-foreground">
+                {comment.author.role === "TEACHER" ? "선생님" : "학생"}
+              </span>
             </div>
-            <span className="text-xs text-muted-foreground">{comment.timestamp}</span>
+            <span className="text-xs text-muted-foreground">
+              {formatDate(comment.createdAt)}
+            </span>
           </div>
           <p className="text-sm">{comment.content}</p>
           <div className="flex items-center gap-4 pt-1">
-            <Button variant="ghost" size="sm" className="h-8 gap-1 px-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 gap-1 px-2"
+              onClick={handleLike}
+            >
               <ThumbsUp className="h-4 w-4" />
               <span className="text-xs">{comment.likes}</span>
             </Button>
@@ -194,6 +202,7 @@ function Comment({ comment, isReply = false }: { comment: any; isReply?: boolean
                 className="min-h-[80px]"
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
+                disabled={submitting}
               />
               <div className="flex justify-end gap-2">
                 <Button
@@ -201,20 +210,18 @@ function Comment({ comment, isReply = false }: { comment: any; isReply?: boolean
                   size="sm"
                   onClick={() => {
                     setShowReplyForm(false);
-                    setReplyText('');
+                    setReplyText("");
                   }}
+                  disabled={submitting}
                 >
                   취소
                 </Button>
                 <Button
                   size="sm"
-                  onClick={() => {
-                    // Here you would typically submit the reply
-                    setShowReplyForm(false);
-                    setReplyText('');
-                  }}
+                  onClick={handleReplySubmit}
+                  disabled={submitting}
                 >
-                  답글 등록
+                  {submitting ? "등록 중..." : "답글 등록"}
                 </Button>
               </div>
             </div>
@@ -224,18 +231,115 @@ function Comment({ comment, isReply = false }: { comment: any; isReply?: boolean
 
       {/* Render replies */}
       {comment.replies &&
-        comment.replies.map((reply: any) => <Comment key={reply.id} comment={reply} isReply={true} />)}
+        comment.replies.map((reply) => (
+          <CommentComponent
+            key={reply.id}
+            comment={reply}
+            isReply={true}
+            onReply={onReply}
+          />
+        ))}
     </div>
   );
 }
 
 export default function IdeaDetailPage() {
   const params = useParams();
-  const ideaId = params.id;
-  const [newComment, setNewComment] = useState('');
+  const router = useRouter();
+  const ideaId = params.id as string;
+  const [newComment, setNewComment] = useState("");
+  const [idea, setIdea] = useState<Idea | null>(null);
+  const [relatedIdeas, setRelatedIdeas] = useState<RelatedIdea[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
-  // In a real app, you would fetch the idea data based on the ideaId
-  // For now, we'll use the sample data
+  useEffect(() => {
+    const fetchIdea = async () => {
+      try {
+        const response = await api.get(`/ideas/${ideaId}`);
+        setIdea(response.data.idea);
+        setRelatedIdeas(response.data.relatedIdeas || []);
+      } catch (error) {
+        console.error("Failed to fetch idea:", error);
+        alert("아이디어를 불러오는데 실패했습니다.");
+        router.push("/ideas/teachers");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchIdea();
+  }, [ideaId, router]);
+
+  const handleCommentSubmit = async () => {
+    if (!newComment.trim()) return;
+
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      router.push("/login");
+      return;
+    }
+
+    setSubmitting(true);
+    try {
+      await api.post(`/ideas/${ideaId}/comments`, {
+        content: newComment,
+      });
+      setNewComment("");
+      window.location.reload(); // 간단하게 페이지 새로고침
+    } catch (error) {
+      console.error("Failed to submit comment:", error);
+      alert("댓글 작성에 실패했습니다.");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleReply = async (parentId: string, content: string) => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      router.push("/login");
+      return;
+    }
+
+    await api.post(`/ideas/${ideaId}/comments`, {
+      content,
+      parentId,
+    });
+    window.location.reload();
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    if (days > 0) return `${days}일 전`;
+    return "최근";
+  };
+
+  if (loading) {
+    return (
+      <SidebarProvider>
+        <div className="flex min-h-screen flex-col">
+          <Navbar />
+          <div className="flex-1 flex items-center justify-center">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+              <p className="mt-4 text-gray-600">로딩 중...</p>
+            </div>
+          </div>
+        </div>
+      </SidebarProvider>
+    );
+  }
+
+  if (!idea) {
+    return null;
+  }
 
   return (
     <SidebarProvider>
@@ -255,33 +359,41 @@ export default function IdeaDetailPage() {
               <div className="space-y-4">
                 <div className="flex items-start justify-between">
                   <div>
-                    <h1 className="text-3xl font-bold">{ideaData.title}</h1>
+                    <h1 className="text-3xl font-bold">{idea.title}</h1>
                     <div className="mt-2 flex items-center gap-4">
                       <div className="flex items-center gap-2">
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src={ideaData.author.avatar} alt={ideaData.author.name} />
-                          <AvatarFallback>{ideaData.author.name.charAt(0)}</AvatarFallback>
+                          <AvatarFallback>
+                            {idea.author.name.charAt(0)}
+                          </AvatarFallback>
                         </Avatar>
                         <div>
-                          <span className="text-sm font-medium">{ideaData.author.name}</span>
-                          <span className="ml-2 text-xs text-muted-foreground">{ideaData.author.role}</span>
+                          <span className="text-sm font-medium">
+                            {idea.author.name}
+                          </span>
+                          <span className="ml-2 text-xs text-muted-foreground">
+                            {idea.author.role === "TEACHER" ? "선생님" : "학생"}
+                          </span>
                         </div>
                       </div>
                       <div className="flex items-center gap-1 text-xs text-muted-foreground">
                         <Clock className="h-3 w-3" />
-                        <span>{ideaData.postedDate}</span>
+                        <span>{formatDate(idea.createdAt)}</span>
                       </div>
                     </div>
                   </div>
-                  <StatusBadge status={ideaData.status} />
+                  <StatusBadge status={idea.status} />
                 </div>
 
-                <p className="text-muted-foreground">{ideaData.description}</p>
+                <p className="text-muted-foreground">{idea.description}</p>
 
                 <div className="flex flex-wrap gap-2">
-                  {ideaData.tags.map((tag) => (
-                    // 태그의 줄바꿈을 방지하기 위해 whitespace-nowrap 추가
-                    <Badge key={tag} variant="secondary" className="font-normal whitespace-nowrap">
+                  {idea.tags.map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="font-normal whitespace-nowrap"
+                    >
                       #{tag}
                     </Badge>
                   ))}
@@ -300,20 +412,34 @@ export default function IdeaDetailPage() {
                     placeholder="댓글 추가..."
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
+                    disabled={submitting}
                   />
                   <div className="flex justify-end">
-                    <Button className="gap-2">
+                    <Button
+                      className="gap-2"
+                      onClick={handleCommentSubmit}
+                      disabled={submitting}
+                    >
                       <Send className="h-4 w-4" />
-                      댓글 달기
+                      {submitting ? "등록 중..." : "댓글 달기"}
                     </Button>
                   </div>
                 </div>
 
                 {/* Comments list */}
                 <div className="mt-6">
-                  {ideaData.comments.map((comment) => (
-                    <Comment key={comment.id} comment={comment} />
+                  {idea.comments.map((comment) => (
+                    <CommentComponent
+                      key={comment.id}
+                      comment={comment}
+                      onReply={handleReply}
+                    />
                   ))}
+                  {idea.comments.length === 0 && (
+                    <p className="text-center text-muted-foreground py-8">
+                      첫 번째 댓글을 작성해보세요!
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -323,20 +449,31 @@ export default function IdeaDetailPage() {
               <h2 className="mb-4 text-xl font-semibold">관련 아이디어</h2>
               <Card>
                 <CardContent className="space-y-4">
-                  {relatedIdeas.map((idea) => (
+                  {relatedIdeas.map((relatedIdea) => (
                     <div key={idea.id} className="space-y-2">
-                      <Link href={`/ideas/${idea.id}`} className="font-medium hover:text-primary">
+                      <Link
+                        href={`/ideas/${idea.id}`}
+                        className="font-medium hover:text-primary"
+                      >
                         {idea.title}
                       </Link>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{idea.description}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-2">
+                        {idea.description}
+                      </p>
                       <div className="flex flex-wrap gap-1">
                         {idea.tags.slice(0, 2).map((tag) => (
-                          <Badge key={tag} variant="outline" className="text-xs font-normal whitespace-nowrap">
+                          <Badge
+                            key={tag}
+                            variant="outline"
+                            className="text-xs font-normal whitespace-nowrap"
+                          >
                             #{tag}
                           </Badge>
                         ))}
                         {idea.tags.length > 2 && (
-                          <span className="text-xs text-muted-foreground">+{idea.tags.length - 2} more</span>
+                          <span className="text-xs text-muted-foreground">
+                            +{idea.tags.length - 2} more
+                          </span>
                         )}
                       </div>
                       <Separator className="mt-2" />

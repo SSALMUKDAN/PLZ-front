@@ -1,0 +1,114 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  TEACHER
+  STUDENT
+}
+
+enum IdeaStatus {
+  OPEN        // 모집중
+  IN_PROGRESS // 진행중
+  COMPLETED   // 완료
+}
+
+enum ParticipationStatus {
+  PENDING   // 신청
+  APPROVED  // 승인
+  REJECTED  // 거절
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  name      String
+  role      Role
+  
+  // 선생님 전용 필드
+  workPlace String?
+  
+  // 학생 전용 필드
+  studentId String?
+  major     String?
+  skills    String[]
+  bio       String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  ideas          Idea[]
+  comments       Comment[]
+  participations IdeaParticipation[]
+}
+
+model Idea {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  category    String
+  tags        String[]
+  status      IdeaStatus  @default(OPEN)
+  
+  authorId    String      @db.ObjectId
+  author      User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorRole  Role
+  
+  lookingForCollaborators Boolean @default(true)
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  // Relations
+  comments       Comment[]
+  participations IdeaParticipation[]
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  
+  authorId  String   @db.ObjectId
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  ideaId    String   @db.ObjectId
+  idea      Idea     @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+  
+  // 대댓글을 위한 자기 참조
+  parentId  String?  @db.ObjectId
+  parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   Comment[] @relation("CommentReplies")
+  
+  likes     Int      @default(0)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model IdeaParticipation {
+  id        String              @id @default(auto()) @map("_id") @db.ObjectId
+  
+  studentId String              @db.ObjectId
+  student   User                @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  
+  ideaId    String              @db.ObjectId
+  idea      Idea                @relation(fields: [ideaId], references: [id], onDelete: Cascade)
+  
+  role      String              // 참여 역할 (예: 프론트엔드 개발자)
+  status    ParticipationStatus @default(PENDING)
+  
+  createdAt DateTime            @default(now())
+  updatedAt DateTime            @updatedAt
+  
+  // 한 학생은 같은 아이디어에 중복 참여 불가
+  @@unique([studentId, ideaId])
+}
