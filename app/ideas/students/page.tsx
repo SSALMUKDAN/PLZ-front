@@ -172,7 +172,11 @@ export default function StudentIdeasPage() {
                         </div>
                       </CardHeader>
                       <CardContent className="pb-3 flex-grow">
-                        <p className="text-muted-foreground mb-4">{project.description}</p>
+                        <p className="text-muted-foreground mb-4">
+                          {project.description.length > 100
+                            ? `${project.description.slice(0, 100)}...`
+                            : project.description}
+                        </p>
                         <div className="flex flex-wrap gap-2">
                           {project.tags.map((tag) => (
                             <Badge key={tag} variant="secondary" className="font-normal whitespace-nowrap">
