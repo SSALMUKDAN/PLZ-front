@@ -48,6 +48,7 @@ model User {
   // Relations
   ideas          Idea[]
   comments       Comment[]
+  commentLikes   CommentLike[]
   participations IdeaParticipation[]
 }
 
@@ -89,9 +90,25 @@ model Comment {
   replies   Comment[] @relation("CommentReplies")
   
   likes     Int      @default(0)
+  likedBy   CommentLike[]
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model CommentLike {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  
+  userId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  commentId String   @db.ObjectId
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  // 한 유저는 같은 댓글에 중복 좋아요 불가
+  @@unique([userId, commentId])
 }
 
 model IdeaParticipation {

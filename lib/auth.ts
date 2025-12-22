@@ -53,3 +53,16 @@ export function extractToken(authHeader: string | null): string | null {
   }
   return authHeader.substring(7);
 }
+
+// Request에서 사용자 ID 추출 (로그인하지 않은 경우 null 반환)
+export function getUserIdFromRequest(request: Request): string | null {
+  const authHeader = request.headers.get("Authorization");
+  const token = extractToken(authHeader);
+
+  if (!token) {
+    return null;
+  }
+
+  const decoded = verifyToken(token);
+  return decoded?.userId ?? null;
+}

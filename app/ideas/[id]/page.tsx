@@ -1,15 +1,26 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useParams, useRouter } from 'next/navigation';
-import { BookOpen, Home, User, Bell, Users, Clock, ThumbsUp, Reply, Send } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Textarea } from '@/components/ui/textarea';
-import { Separator } from '@/components/ui/separator';
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import {
+  BookOpen,
+  Home,
+  User,
+  Bell,
+  Users,
+  Clock,
+  ThumbsUp,
+  Reply,
+  Send,
+  Trash2,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
 import {
   Sidebar,
   SidebarContent,
@@ -19,10 +30,21 @@ import {
   SidebarMenuItem,
   SidebarProvider,
   SidebarTrigger,
-} from '@/components/ui/sidebar';
-import Navbar from '@/components/navbar';
-import Footer from '@/components/footer';
-import api from '@/lib/apiAxios';
+} from "@/components/ui/sidebar";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import api from "@/lib/apiAxios";
 
 interface Comment {
   id: string;
@@ -33,6 +55,7 @@ interface Comment {
     role: string;
   };
   likes: number;
+  isLiked?: boolean;
   createdAt: string;
   replies?: Comment[];
 }
@@ -64,24 +87,24 @@ interface RelatedIdea {
 
 // Status badge component
 function StatusBadge({ status }: { status: string }) {
-  let variant: 'outline' | 'default' | 'secondary' | 'destructive' = 'outline';
+  let variant: "outline" | "default" | "secondary" | "destructive" = "outline";
   let label = status;
 
   switch (status) {
-    case 'OPEN':
-    case 'Open':
-      variant = 'default';
-      label = '모집중';
+    case "OPEN":
+    case "Open":
+      variant = "default";
+      label = "모집중";
       break;
-    case 'IN_PROGRESS':
-    case 'In Progress':
-      variant = 'secondary';
-      label = '진행 중';
+    case "IN_PROGRESS":
+    case "In Progress":
+      variant = "secondary";
+      label = "진행 중";
       break;
-    case 'COMPLETED':
-    case 'Completed':
-      variant = 'outline';
-      label = '완료';
+    case "COMPLETED":
+    case "Completed":
+      variant = "outline";
+      label = "완료";
       break;
   }
 
@@ -97,14 +120,21 @@ function CommentComponent({
   comment,
   isReply = false,
   onReply,
+  currentUserId,
+  onDelete,
 }: {
   comment: Comment;
   isReply?: boolean;
   onReply: (parentId: string, content: string) => Promise<void>;
+  currentUserId: string | null;
+  onDelete: (commentId: string) => Promise<void>;
 }) {
   const [showReplyForm, setShowReplyForm] = useState(false);
-  const [replyText, setReplyText] = useState('');
+  const [replyText, setReplyText] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [likes, setLikes] = useState(comment.likes);
+  const [isLiked, setIsLiked] = useState(comment.isLiked ?? false);
+  const [liking, setLiking] = useState(false);
 
   const handleReplySubmit = async () => {
     if (!replyText.trim()) return;
@@ -112,24 +142,48 @@ function CommentComponent({
     setSubmitting(true);
     try {
       await onReply(comment.id, replyText);
-      setReplyText('');
+      setReplyText("");
       setShowReplyForm(false);
     } catch (error) {
-      console.error('Failed to submit reply:', error);
-      alert('답글 작성에 실패했습니다.');
+      console.error("Failed to submit reply:", error);
+      alert("답글 작성에 실패했습니다.");
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleLike = async () => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    if (liking) return;
+    setLiking(true);
+
     try {
-      await api.post(`/comments/${comment.id}/like`);
-      window.location.reload(); // 간단하게 페이지 새로고침
+      const response = await api.post(`/comments/${comment.id}/like`);
+      setLikes(response.data.likes);
+      setIsLiked(response.data.isLiked);
     } catch (error) {
-      console.error('Failed to like comment:', error);
+      console.error("Failed to like comment:", error);
+      alert("좋아요 처리에 실패했습니다.");
+    } finally {
+      setLiking(false);
     }
   };
+
+  const handleDelete = async () => {
+    try {
+      await onDelete(comment.id);
+    } catch (error) {
+      console.error("Failed to delete comment:", error);
+      alert("댓글 삭제에 실패했습니다.");
+    }
+  };
+
+  const isAuthor = currentUserId && comment.author.id === currentUserId;
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -140,11 +194,11 @@ function CommentComponent({
 
     if (days > 0) return `${days}일 전`;
     if (hours > 0) return `${hours}시간 전`;
-    return '방금 전';
+    return "방금 전";
   };
 
   return (
-    <div className={`${isReply ? 'ml-12 mt-4' : 'mt-6'}`}>
+    <div className={`${isReply ? "ml-12 mt-4" : "mt-6"}`}>
       <div className="flex gap-4">
         <Avatar className="h-10 w-10">
           <AvatarFallback>{comment.author.name.charAt(0)}</AvatarFallback>
@@ -154,16 +208,26 @@ function CommentComponent({
             <div>
               <span className="font-medium">{comment.author.name}</span>
               <span className="ml-2 text-xs text-muted-foreground">
-                {comment.author.role === 'TEACHER' ? '선생님' : '학생'}
+                {comment.author.role === "TEACHER" ? "선생님" : "학생"}
               </span>
             </div>
-            <span className="text-xs text-muted-foreground">{formatDate(comment.createdAt)}</span>
+            <span className="text-xs text-muted-foreground">
+              {formatDate(comment.createdAt)}
+            </span>
           </div>
           <p className="text-sm">{comment.content}</p>
           <div className="flex items-center gap-4 pt-1">
-            <Button variant="ghost" size="sm" className="h-8 gap-1 px-2" onClick={handleLike}>
-              <ThumbsUp className="h-4 w-4" />
-              <span className="text-xs">{comment.likes}</span>
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`h-8 gap-1 px-2 ${isLiked ? "text-blue-500" : ""}`}
+              onClick={handleLike}
+              disabled={liking}
+            >
+              <ThumbsUp
+                className={`h-4 w-4 ${isLiked ? "fill-current" : ""}`}
+              />
+              <span className="text-xs">{likes}</span>
             </Button>
             {!isReply && (
               <Button
@@ -175,6 +239,35 @@ function CommentComponent({
                 <Reply className="h-4 w-4" />
                 <span className="text-xs">답글</span>
               </Button>
+            )}
+            {isAuthor && (
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 gap-1 px-2 text-destructive hover:text-destructive"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    <span className="text-xs">삭제</span>
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>댓글 삭제</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      정말로 이 댓글을 삭제하시겠습니까? 이 작업은 되돌릴 수
+                      없습니다.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>취소</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDelete}>
+                      삭제
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             )}
           </div>
 
@@ -193,14 +286,18 @@ function CommentComponent({
                   size="sm"
                   onClick={() => {
                     setShowReplyForm(false);
-                    setReplyText('');
+                    setReplyText("");
                   }}
                   disabled={submitting}
                 >
                   취소
                 </Button>
-                <Button size="sm" onClick={handleReplySubmit} disabled={submitting}>
-                  {submitting ? '등록 중...' : '답글 등록'}
+                <Button
+                  size="sm"
+                  onClick={handleReplySubmit}
+                  disabled={submitting}
+                >
+                  {submitting ? "등록 중..." : "답글 등록"}
                 </Button>
               </div>
             </div>
@@ -211,7 +308,14 @@ function CommentComponent({
       {/* Render replies */}
       {comment.replies &&
         comment.replies.map((reply) => (
-          <CommentComponent key={reply.id} comment={reply} isReply={true} onReply={onReply} />
+          <CommentComponent
+            key={reply.id}
+            comment={reply}
+            isReply={true}
+            onReply={onReply}
+            currentUserId={currentUserId}
+            onDelete={onDelete}
+          />
         ))}
     </div>
   );
@@ -221,11 +325,12 @@ export default function IdeaDetailPage() {
   const params = useParams();
   const router = useRouter();
   const ideaId = params.id as string;
-  const [newComment, setNewComment] = useState('');
+  const [newComment, setNewComment] = useState("");
   const [idea, setIdea] = useState<Idea | null>(null);
   const [relatedIdeas, setRelatedIdeas] = useState<RelatedIdea[]>([]);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchIdea = async () => {
@@ -233,10 +338,11 @@ export default function IdeaDetailPage() {
         const response = await api.get(`/ideas/${ideaId}`);
         setIdea(response.data.idea);
         setRelatedIdeas(response.data.relatedIdeas || []);
+        setCurrentUserId(response.data.currentUserId || null);
       } catch (error) {
-        console.error('Failed to fetch idea:', error);
-        alert('아이디어를 불러오는데 실패했습니다.');
-        router.push('/ideas/teachers');
+        console.error("Failed to fetch idea:", error);
+        alert("아이디어를 불러오는데 실패했습니다.");
+        router.push("/ideas/teachers");
       } finally {
         setLoading(false);
       }
@@ -248,10 +354,10 @@ export default function IdeaDetailPage() {
   const handleCommentSubmit = async () => {
     if (!newComment.trim()) return;
 
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     if (!token) {
-      alert('로그인이 필요합니다.');
-      router.push('/login');
+      alert("로그인이 필요합니다.");
+      router.push("/login");
       return;
     }
 
@@ -260,21 +366,21 @@ export default function IdeaDetailPage() {
       await api.post(`/ideas/${ideaId}/comments`, {
         content: newComment,
       });
-      setNewComment('');
+      setNewComment("");
       window.location.reload(); // 간단하게 페이지 새로고침
     } catch (error) {
-      console.error('Failed to submit comment:', error);
-      alert('댓글 작성에 실패했습니다.');
+      console.error("Failed to submit comment:", error);
+      alert("댓글 작성에 실패했습니다.");
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleReply = async (parentId: string, content: string) => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem("authToken");
     if (!token) {
-      alert('로그인이 필요합니다.');
-      router.push('/login');
+      alert("로그인이 필요합니다.");
+      router.push("/login");
       return;
     }
 
@@ -285,6 +391,18 @@ export default function IdeaDetailPage() {
     window.location.reload();
   };
 
+  const handleDeleteComment = async (commentId: string) => {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      alert("로그인이 필요합니다.");
+      router.push("/login");
+      return;
+    }
+
+    await api.delete(`/comments/${commentId}`);
+    window.location.reload();
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -292,7 +410,7 @@ export default function IdeaDetailPage() {
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
 
     if (days > 0) return `${days}일 전`;
-    return '최근';
+    return "최근";
   };
 
   if (loading) {
@@ -337,12 +455,16 @@ export default function IdeaDetailPage() {
                     <div className="mt-2 flex items-center gap-4">
                       <div className="flex items-center gap-2">
                         <Avatar className="h-8 w-8">
-                          <AvatarFallback>{idea.author.name.charAt(0)}</AvatarFallback>
+                          <AvatarFallback>
+                            {idea.author.name.charAt(0)}
+                          </AvatarFallback>
                         </Avatar>
                         <div>
-                          <span className="text-sm font-medium">{idea.author.name}</span>
+                          <span className="text-sm font-medium">
+                            {idea.author.name}
+                          </span>
                           <span className="ml-2 text-xs text-muted-foreground">
-                            {idea.author.role === 'TEACHER' ? '선생님' : '학생'}
+                            {idea.author.role === "TEACHER" ? "선생님" : "학생"}
                           </span>
                         </div>
                       </div>
@@ -359,7 +481,11 @@ export default function IdeaDetailPage() {
 
                 <div className="flex flex-wrap gap-2">
                   {idea.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="font-normal whitespace-nowrap">
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="font-normal whitespace-nowrap"
+                    >
                       #{tag}
                     </Badge>
                   ))}
@@ -381,9 +507,13 @@ export default function IdeaDetailPage() {
                     disabled={submitting}
                   />
                   <div className="flex justify-end">
-                    <Button className="gap-2" onClick={handleCommentSubmit} disabled={submitting}>
+                    <Button
+                      className="gap-2"
+                      onClick={handleCommentSubmit}
+                      disabled={submitting}
+                    >
                       <Send className="h-4 w-4" />
-                      {submitting ? '등록 중...' : '댓글 달기'}
+                      {submitting ? "등록 중..." : "댓글 달기"}
                     </Button>
                   </div>
                 </div>
@@ -391,10 +521,18 @@ export default function IdeaDetailPage() {
                 {/* Comments list */}
                 <div className="mt-6">
                   {idea.comments.map((comment) => (
-                    <CommentComponent key={comment.id} comment={comment} onReply={handleReply} />
+                    <CommentComponent
+                      key={comment.id}
+                      comment={comment}
+                      onReply={handleReply}
+                      currentUserId={currentUserId}
+                      onDelete={handleDeleteComment}
+                    />
                   ))}
                   {idea.comments.length === 0 && (
-                    <p className="text-center text-muted-foreground py-8">첫 번째 댓글을 작성해보세요!</p>
+                    <p className="text-center text-muted-foreground py-8">
+                      첫 번째 댓글을 작성해보세요!
+                    </p>
                   )}
                 </div>
               </div>
@@ -407,18 +545,29 @@ export default function IdeaDetailPage() {
                 <CardContent className="space-y-4">
                   {relatedIdeas.map((relatedIdea) => (
                     <div key={idea.id} className="space-y-2">
-                      <Link href={`/ideas/${idea.id}`} className="font-medium hover:text-primary">
+                      <Link
+                        href={`/ideas/${idea.id}`}
+                        className="font-medium hover:text-primary"
+                      >
                         {idea.title}
                       </Link>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{idea.description}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-2">
+                        {idea.description}
+                      </p>
                       <div className="flex flex-wrap gap-1">
                         {idea.tags.slice(0, 2).map((tag) => (
-                          <Badge key={tag} variant="outline" className="text-xs font-normal whitespace-nowrap">
+                          <Badge
+                            key={tag}
+                            variant="outline"
+                            className="text-xs font-normal whitespace-nowrap"
+                          >
                             #{tag}
                           </Badge>
                         ))}
                         {idea.tags.length > 2 && (
-                          <span className="text-xs text-muted-foreground">+{idea.tags.length - 2} more</span>
+                          <span className="text-xs text-muted-foreground">
+                            +{idea.tags.length - 2} more
+                          </span>
                         )}
                       </div>
                       <Separator className="mt-2" />

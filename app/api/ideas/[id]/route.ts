@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAuth, errorResponse, successResponse } from "@/lib/api-utils";
+import { getUserIdFromRequest } from "@/lib/auth";
 
 // 아이디어 상세 조회
 export async function GET(
@@ -9,6 +10,9 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
+
+    // 현재 로그인한 사용자 ID 가져오기 (로그인하지 않아도 조회 가능)
+    const currentUserId = getUserIdFromRequest(request);
 
     const idea = await prisma.idea.findUnique({
       where: { id },
@@ -31,6 +35,12 @@ export async function GET(
                 role: true,
               },
             },
+            likedBy: currentUserId
+              ? {
+                  where: { userId: currentUserId },
+                  select: { userId: true },
+                }
+              : false,
             replies: {
               include: {
                 author: {
@@ -40,6 +50,12 @@ export async function GET(
                     role: true,
                   },
                 },
+                likedBy: currentUserId
+                  ? {
+                      where: { userId: currentUserId },
+                      select: { userId: true },
+                    }
+                  : false,
               },
               orderBy: { createdAt: "asc" },
             },
@@ -52,6 +68,18 @@ export async function GET(
     if (!idea) {
       return errorResponse("아이디어를 찾을 수 없습니다.", 404);
     }
+
+    // 댓글에 isLiked 필드 추가
+    const commentsWithLikeStatus = idea.comments.map((comment: any) => ({
+      ...comment,
+      isLiked: comment.likedBy?.length > 0,
+      likedBy: undefined, // 응답에서 제거
+      replies: comment.replies?.map((reply: any) => ({
+        ...reply,
+        isLiked: reply.likedBy?.length > 0,
+        likedBy: undefined,
+      })),
+    }));
 
     // 관련 아이디어 추천 (같은 태그 기준)
     const relatedIdeas = await prisma.idea.findMany({
@@ -76,7 +104,11 @@ export async function GET(
     });
 
     return successResponse({
-      idea,
+      idea: {
+        ...idea,
+        comments: commentsWithLikeStatus,
+      },
+      currentUserId,
       relatedIdeas: relatedIdeas.map((r) => ({
         id: r.id,
         title: r.title,
