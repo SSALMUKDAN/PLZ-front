@@ -5,7 +5,7 @@ import { requireAuth, errorResponse, successResponse } from "@/lib/api-utils";
 // 댓글 수정
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const authResult = requireAuth(request);
@@ -15,7 +15,7 @@ export async function PUT(
     }
 
     const { userId } = authResult;
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { content } = body;
 
@@ -63,7 +63,7 @@ export async function PUT(
 // 댓글 삭제
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const authResult = requireAuth(request);
@@ -73,7 +73,7 @@ export async function DELETE(
     }
 
     const { userId } = authResult;
-    const { id } = params;
+    const { id } = await params;
 
     // 댓글 조회 및 권한 확인
     const comment = await prisma.comment.findUnique({

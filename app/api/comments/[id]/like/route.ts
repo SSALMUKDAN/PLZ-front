@@ -5,7 +5,7 @@ import { requireAuth, errorResponse, successResponse } from "@/lib/api-utils";
 // 댓글 좋아요
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const authResult = requireAuth(request);
@@ -14,7 +14,7 @@ export async function POST(
       return authResult;
     }
 
-    const { id } = params;
+    const { id } = await params;
 
     // 댓글 존재 확인
     const comment = await prisma.comment.findUnique({
