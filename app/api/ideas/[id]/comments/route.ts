@@ -5,10 +5,10 @@ import { requireAuth, errorResponse, successResponse } from "@/lib/api-utils";
 // 댓글 목록 조회 (아이디어 상세에 포함되어 있으므로 선택적)
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     const comments = await prisma.comment.findMany({
       where: {
@@ -49,7 +49,7 @@ export async function GET(
 // 댓글 생성
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const authResult = requireAuth(request);
@@ -59,7 +59,7 @@ export async function POST(
     }
 
     const { userId } = authResult;
-    const { id: ideaId } = params;
+    const { id: ideaId } = await params;
     const body = await request.json();
     const { content, parentId } = body;
 
