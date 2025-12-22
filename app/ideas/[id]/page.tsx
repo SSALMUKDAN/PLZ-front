@@ -298,7 +298,7 @@ export default function IdeaDetailPage() {
   if (loading) {
     return (
       <SidebarProvider>
-        <div className="flex min-h-screen flex-col">
+        <div className="flex min-h-screen flex-col min-w-full">
           <Navbar />
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
